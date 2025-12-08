@@ -1,0 +1,18 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900"><%= @batch.name %></h1>
+    <p class="mt-2 text-gray-600">
+      Создан: <%= @batch.created_at.strftime("%d.%m.%Y %H:%M") %>
+    </p>
+
+    <!-- Progress Bar -->
+    <div class="mt-4">
+      <div class="flex justify-between text-sm text-gray-600 mb-1">
+        <span>Прогресс: <%= @batch.processed_sheets %> / <%= @batch.total_sheets %></span>
+        <span><%= @batch.completion_percentage %>%</span>
+      </div>
+      <div class="w-full bg-gray-200 rounded-full h-2">
+        <div class="bg-blue-600 h-2 rounded-full"
+             style="width: <%= @batch.completion_percentage %>%"></div>
+      </div>
+    </div>
