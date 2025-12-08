@@ -1,0 +1,2 @@
+class KnowledgeDocument < ApplicationRecord
+end
