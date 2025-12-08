@@ -1,0 +1,2 @@
+class AuditBatch < ApplicationRecord
+end

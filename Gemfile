@@ -49,7 +49,7 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 
   gem "rspec-rails", "~> 8.0.0"
-  gem "factory_bot", "~> 6.5"
+  gem "factory_bot_rails", "~> 6.5", ">= 6.5.1"
   gem "faker"
   gem "dotenv-rails"
   gem "capybara", "~> 3.40"
@@ -97,3 +97,7 @@ gem "mission_control-jobs" # Job monitoring UI
 
 # monitor add migration table
 gem "strong_migrations", "~> 2.5"
+
+# Authenticate build [https://github.com/heartcombo/devise]
+gem "devise-i18n", "~> 1.12"
+gem "devise", "~> 4.9"

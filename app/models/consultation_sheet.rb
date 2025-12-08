@@ -1,0 +1,2 @@
+class ConsultationSheet < ApplicationRecord
+end
