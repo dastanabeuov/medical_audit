@@ -1,35 +1,56 @@
+# default: &default
+#   adapter: postgresql
+#   encoding: unicode
+#   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+# development:
+#   <<: *default
+#   database: medical_audit_development
+#   username: postgres
+#   password: <%= ENV["DB_PASSWORD"] %>
+
+# test:
+#   <<: *default
+#   database: medical_audit_test
+#   username: postgres
+#   password: <%= ENV["DB_PASSWORD"] %>
+
+# production:
+#   primary: &primary_production
+#     <<: *default
+#     database: medical_audit_production
+#     username: medical_audit
+#     password: <%= ENV["MEDICAL_AUDIT_DATABASE_PASSWORD"] %>
+#   cache:
+#     <<: *primary_production
+#     database: medical_audit_production_cache
+#     migrations_paths: db/cache_migrate
+#   queue:
+#     <<: *primary_production
+#     database: medical_audit_production_queue
+#     migrations_paths: db/queue_migrate
+#   cable:
+#     <<: *primary_production
+#     database: medical_audit_production_cable
+#     migrations_paths: db/cable_migrate
 default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= ENV.fetch("DATABASE_HOST", "localhost") %>
+  username: <%= ENV.fetch("DATABASE_USERNAME", "postgres") %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD", "") %>
 
 development:
   <<: *default
-  database: medical_audit_development
-  username: postgres
-  password: <%= ENV["DB_PASSWORD"] %>
+  database: medical_audit_rag_development
 
 test:
   <<: *default
-  database: medical_audit_test
-  username: postgres
-  password: <%= ENV["DB_PASSWORD"] %>
+  database: medical_audit_rag_test
 
 production:
-  primary: &primary_production
-    <<: *default
-    database: medical_audit_production
-    username: medical_audit
-    password: <%= ENV["MEDICAL_AUDIT_DATABASE_PASSWORD"] %>
-  cache:
-    <<: *primary_production
-    database: medical_audit_production_cache
-    migrations_paths: db/cache_migrate
-  queue:
-    <<: *primary_production
-    database: medical_audit_production_queue
-    migrations_paths: db/queue_migrate
-  cable:
-    <<: *primary_production
-    database: medical_audit_production_cable
-    migrations_paths: db/cable_migrate
+  <<: *default
+  database: medical_audit_rag_production
+  username: <%= ENV["DATABASE_USERNAME"] %>
+  password: <%= ENV["DATABASE_PASSWORD"] %>

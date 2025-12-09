@@ -86,18 +86,20 @@ gem "mysql2",          "~> 0.4",    platform: :ruby
 gem "jdbc-mysql",      "~> 5.1.35", platform: :jruby
 gem "thinking-sphinx", "~> 5.5"
 
-# cron
+# Scheduling cron & jobs
 gem "whenever", "~> 1.1"
-
-# RedisDB key: => :value
-gem "redis"
+gem "sidekiq", "~> 8.0"
+gem "redis", "~> 5.4", ">= 5.4.1"
 
 # Background jobs control + interface
 gem "mission_control-jobs" # Job monitoring UI
 
 # monitor add migration table
-gem "strong_migrations", "~> 2.5"
+#gem "strong_migrations", "~> 2.5"
 
 # Authenticate build [https://github.com/heartcombo/devise]
 gem "devise-i18n", "~> 1.12"
 gem "devise", "~> 4.9"
+
+# Omit the patch segment to avoid breaking changes
+gem "kaminari"
