@@ -16,3 +16,155 @@
              style="width: <%= @batch.completion_percentage %>%"></div>
       </div>
     </div>
+
+    <!-- Risk Summary -->
+    <div class="mt-6 grid grid-cols-3 gap-4">
+      <div class="bg-red-50 border-2 border-red-200 rounded-lg p-4">
+        <div class="text-red-600 text-sm font-medium">Критические (Красные)</div>
+        <div class="text-3xl font-bold text-red-700 mt-2">
+          <%= @batch.risk_summary[:red] %>
+        </div>
+      </div>
+      <div class="bg-yellow-50 border-2 border-yellow-200 rounded-lg p-4">
+        <div class="text-yellow-600 text-sm font-medium">С замечаниями (Желтые)</div>
+        <div class="text-3xl font-bold text-yellow-700 mt-2">
+          <%= @batch.risk_summary[:yellow] %>
+        </div>
+      </div>
+      <div class="bg-green-50 border-2 border-green-200 rounded-lg p-4">
+        <div class="text-green-600 text-sm font-medium">Соответствуют (Зеленые)</div>
+        <div class="text-3xl font-bold text-green-700 mt-2">
+          <%= @batch.risk_summary[:green] %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="mb-6 flex gap-2">
+    <%= link_to "Все", audit_batch_path(@batch),
+        class: "px-4 py-2 rounded-lg #{params[:filter].blank? ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}" %>
+    <%= link_to "Красные", audit_batch_path(@batch, filter: :red),
+        class: "px-4 py-2 rounded-lg #{params[:filter] == 'red' ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-700'}" %>
+    <%= link_to "Желтые", audit_batch_path(@batch, filter: :yellow),
+        class: "px-4 py-2 rounded-lg #{params[:filter] == 'yellow' ? 'bg-yellow-600 text-white' : 'bg-gray-200 text-gray-700'}" %>
+    <%= link_to "Зеленые", audit_batch_path(@batch, filter: :green),
+        class: "px-4 py-2 rounded-lg #{params[:filter] == 'green' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'}" %>
+  </div>
+
+  <!-- Consultation Sheets List -->
+  <div class="space-y-4">
+    <% @sheets.each do |sheet| %>
+      <div class="bg-white border-l-4 <%= risk_level_border(sheet.risk_level) %> rounded-lg shadow p-6">
+        <div class="flex justify-between items-start">
+          <div class="flex-1">
+            <h3 class="text-lg font-semibold text-gray-900">
+              <%= sheet.patient_name %>
+            </h3>
+            <p class="text-sm text-gray-600 mt-1">
+              ИИН: <%= sheet.patient_id || 'Не указан' %>
+            </p>
+            <p class="text-sm text-gray-700 mt-2">
+              <span class="font-medium">Диагноз:</span> <%= sheet.diagnosis %>
+            </p>
+
+            <% if sheet.status == 'completed' %>
+              <div class="mt-3">
+                <span class="text-sm font-medium text-gray-700">Оценка:</span>
+                <span class="text-2xl font-bold <%= score_color(sheet.score) %> ml-2">
+                  <%= sheet.score.round(1) %>/100
+                </span>
+              </div>
+
+              <% if sheet.findings.present? && sheet.findings['violations'].present? %>
+                <div class="mt-3">
+                  <p class="text-sm font-medium text-gray-700 mb-2">Нарушения:</p>
+                  <ul class="text-sm text-gray-600 space-y-1">
+                    <% sheet.findings['violations'].first(3).each do |violation| %>
+                      <li class="flex items-start">
+                        <span class="<%= severity_badge(violation['severity']) %> mr-2 mt-0.5">
+                          <%= violation['severity'] %>
+                        </span>
+                        <%= violation['description'].truncate(100) %>
+                      </li>
+                    <% end %>
+                  </ul>
+                  <% if sheet.findings['violations'].length > 3 %>
+                    <p class="text-xs text-gray-500 mt-2">
+                      + еще <%= sheet.findings['violations'].length - 3 %> нарушений
+                    </p>
+                  <% end %>
+                </div>
+              <% end %>
+            <% elsif sheet.status == 'processing' %>
+              <div class="mt-3 flex items-center text-blue-600">
+                <svg class="animate-spin h-4 w-4 mr-2" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                </svg>
+                Обрабатывается...
+              </div>
+            <% elsif sheet.status == 'failed' %>
+              <div class="mt-3 text-red-600 text-sm">
+                Ошибка обработки
+              </div>
+            <% end %>
+          </div>
+
+          <div class="ml-4">
+            <%= link_to "Детали", consultation_sheet_path(sheet),
+                class: "px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
+<!-- WebSocket для live updates -->
+<script>
+  import consumer from "channels/consumer"
+
+  consumer.subscriptions.create(
+    { channel: "AuditBatchChannel", batch_id: <%= @batch.id %> },
+    {
+      received(data) {
+        if (data.type === 'sheet_completed') {
+          // Обновляем страницу или конкретный элемент
+          location.reload();
+        }
+      }
+    }
+  );
+</script>
+
+<% content_for :helpers do %>
+  <%
+    def risk_level_border(level)
+      case level
+      when 'red' then 'border-red-500'
+      when 'yellow' then 'border-yellow-500'
+      when 'green' then 'border-green-500'
+      else 'border-gray-300'
+      end
+    end
+
+    def score_color(score)
+      case score
+      when 80..100 then 'text-green-600'
+      when 50...80 then 'text-yellow-600'
+      else 'text-red-600'
+      end
+    end
+
+    def severity_badge(severity)
+      case severity
+      when 'critical' then 'px-2 py-0.5 text-xs font-medium bg-red-100 text-red-800 rounded'
+      when 'major' then 'px-2 py-0.5 text-xs font-medium bg-orange-100 text-orange-800 rounded'
+      when 'minor' then 'px-2 py-0.5 text-xs font-medium bg-yellow-100 text-yellow-800 rounded'
+      else 'px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-800 rounded'
+      end
+    end
+  %>
+<% end %>
