@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
-  devise_for :doctors
-  devise_for :main_doctors
-  devise_for :auditors
+  # devise_for :doctors
+  # devise_for :main_doctors
+  # devise_for :auditors
+
   root to: "home#index"
   get "up" => "rails/health#show", as: :rails_health_check
 
