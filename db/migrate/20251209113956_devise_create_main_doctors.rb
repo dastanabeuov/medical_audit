@@ -1,11 +1,15 @@
 # frozen_string_literal: true
 
-class DeviseCreateAuditors < ActiveRecord::Migration[8.0]
+class DeviseCreateMainDoctors < ActiveRecord::Migration[8.0]
   def change
-    create_table :auditors do |t|
+    create_table :main_doctors do |t|
+      # Custom fields
+      t.string :first_name
+      t.string :last_name
+      t.string :department
+      t.string :specialization
+
       ## Database authenticatable
-      t.string :first_name, null: false, default: ""
-      t.string :last_name, null: false, default: ""
       t.string :email,              null: false, default: ""
       t.string :encrypted_password, null: false, default: ""
 
@@ -38,9 +42,9 @@ class DeviseCreateAuditors < ActiveRecord::Migration[8.0]
       t.timestamps null: false
     end
 
-    add_index :auditors, :email,                unique: true
-    add_index :auditors, :reset_password_token, unique: true
-    add_index :auditors, :confirmation_token,   unique: true
-    add_index :auditors, :unlock_token,         unique: true
+    add_index :main_doctors, :email,                unique: true
+    add_index :main_doctors, :reset_password_token, unique: true
+    add_index :main_doctors, :confirmation_token,   unique: true
+    add_index :main_doctors, :unlock_token,         unique: true
   end
 end

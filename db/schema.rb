@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_08_115542) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_08_121200) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "vector"
@@ -98,6 +98,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_08_115542) do
     t.jsonb "metadata"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.vector "embedding", limit: 2000
+    t.integer "chunk_index"
+    t.bigint "parent_document_id"
+    t.index ["embedding"], name: "index_knowledge_documents_on_embedding", opclass: :vector_cosine_ops, using: :hnsw
+    t.index ["parent_document_id"], name: "index_knowledge_documents_on_parent_document_id"
   end
 
   create_table "main_doctors", force: :cascade do |t|
