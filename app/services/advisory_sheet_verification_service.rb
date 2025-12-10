@@ -11,7 +11,7 @@ class AdvisorySheetVerificationService
     def verify(not_verified_sheet)
       # 1. Санитизация персональных данных
       sanitized_content = PersonalDataSanitizerService.extract_medical_content(not_verified_sheet.body)
-
+      
       return create_error_result(not_verified_sheet) if sanitized_content.blank?
 
       # 2. Генерация эмбеддинга для поиска
@@ -55,7 +55,7 @@ class AdvisorySheetVerificationService
     def find_relevant_protocols(query_embedding, text_content)
       # Сначала ищем по векторному сходству
       vector_results = Protocol.search_similar(query_embedding, limit: RELEVANT_PROTOCOLS_LIMIT)
-
+      
       # Дополнительно ищем по ключевым словам из текста
       keywords = extract_medical_keywords(text_content)
       text_results = keywords.flat_map do |keyword|
@@ -68,7 +68,7 @@ class AdvisorySheetVerificationService
     def find_relevant_mkbs(query_embedding, text_content)
       # Извлекаем МКБ коды из текста КЛ
       mkb_codes_in_text = extract_mkb_codes(text_content)
-
+      
       # Ищем эти коды в базе
       direct_mkbs = Mkb.where(code: mkb_codes_in_text)
 
@@ -87,7 +87,7 @@ class AdvisorySheetVerificationService
       # Извлекаем медицинские термины для текстового поиска
       # Фильтруем короткие слова и общеупотребимые
       stop_words = %w[при для или что как это был была были есть]
-
+      
       text.scan(/[А-Яа-яЁё]{5,}/)
           .map(&:downcase)
           .uniq

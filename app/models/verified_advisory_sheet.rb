@@ -10,10 +10,10 @@ class VerifiedAdvisorySheet < ApplicationRecord
   scope :by_status, ->(status) { where(status: status) }
   scope :by_recording, ->(recording) { where("recording ILIKE ?", "%#{recording}%") }
   scope :by_body, ->(body) { where("body ILIKE ?", "%#{body}%") }
-  scope :search, ->(query) {
-    return all if query.blank?
-    where("recording ILIKE :q OR body ILIKE :q", q: "%#{query}%")
-  }
+  # scope :search, ->(query) {
+  #   return all if query.blank?
+  #   where("recording ILIKE :q OR body ILIKE :q", q: "%#{query}%")
+  # }
 
   def status_color
     case status

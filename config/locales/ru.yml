@@ -1,0 +1,38 @@
+ru:
+  activerecord:
+    models:
+      auditor: Аудитор
+      main_doctor: Главный врач
+      doctor: Врач
+      protocol: Протокол
+      mkb: МКБ
+      not_verified_advisory_sheet: Непроверенный КЛ
+      verified_advisory_sheet: Проверенный КЛ
+    attributes:
+      auditor:
+        email: Email
+        password: Пароль
+        first_name: Имя
+        last_name: Фамилия
+      verified_advisory_sheet:
+        recording: Номер записи
+        body: Содержимое
+        status: Статус
+        verification_result: Результат проверки
+        recommendations: Рекомендации
+
+  devise:
+    sessions:
+      signed_in: "Вы успешно вошли в систему."
+      signed_out: "Вы вышли из системы."
+    failure:
+      invalid: "Неверный email или пароль."
+      not_found_in_database: "Неверный email или пароль."
+
+  views:
+    pagination:
+      first: "&laquo; Первая"
+      last: "Последняя &raquo;"
+      previous: "&lsaquo; Назад"
+      next: "Вперед &rsaquo;"
+      truncate: "&hellip;"

@@ -1,0 +1,44 @@
+<div class="max-w-3xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Загрузка консультативных листов</h1>
+
+  <div class="bg-white rounded-lg shadow p-6">
+    <%= form_with url: cabinet_auditors_advisory_sheets_path, method: :post, multipart: true, class: "space-y-6" do |f| %>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Выберите файлы КЛ (PDF, DOCX, XLSX, TXT)
+        </label>
+        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-blue-400 transition-colors">
+          <div class="space-y-1 text-center">
+            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+              <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <div class="flex text-sm text-gray-600">
+              <label class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500">
+                <span>Выберите файлы</span>
+                <%= f.file_field :files, multiple: true, accept: ".pdf,.docx,.doc,.xlsx,.xls,.txt", class: "sr-only", id: "files-input" %>
+              </label>
+              <p class="pl-1">или перетащите сюда</p>
+            </div>
+            <p class="text-xs text-gray-500">Поддерживаемые форматы: PDF, DOCX, XLSX, TXT</p>
+          </div>
+        </div>
+        <div id="selected-files" class="mt-4 hidden">
+          <p class="text-sm text-gray-600">Выбрано файлов: <span id="files-count" class="font-medium">0</span></p>
+        </div>
+      </div>
+
+      <div class="flex justify-end space-x-4">
+        <%= link_to "Отмена", cabinet_auditors_dashboard_path, class: "px-4 py-2 text-gray-700 hover:text-gray-900" %>
+        <%= f.submit "Загрузить и проверить", class: "bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 cursor-pointer" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  document.getElementById('files-input').addEventListener('change', function(e) {
+    const count = e.target.files.length;
+    document.getElementById('files-count').textContent = count;
+    document.getElementById('selected-files').classList.toggle('hidden', count === 0);
+  });
+</script>
