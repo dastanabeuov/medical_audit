@@ -1,0 +1,33 @@
+<%# app/views/kaminari/_paginator.html.erb %>
+<%= paginator.render do %>
+  <nav class="flex items-center justify-between" aria-label="Pagination">
+    <div class="flex-1 flex justify-between sm:hidden">
+      <%= prev_page_tag class: "relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" %>
+      <%= next_page_tag class: "ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" %>
+    </div>
+    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+      <div>
+        <p class="text-sm text-gray-700">
+          Показано с <span class="font-medium"><%= page_entries_info @sheets, entry_name: 'записей' %></span>
+        </p>
+      </div>
+      <div>
+        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+          <%= first_page_tag class: "relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" %>
+          <%= prev_page_tag class: "relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" %>
+          <% each_page do |page| %>
+            <% if page.current? %>
+              <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-blue-50 text-sm font-medium text-blue-600"><%= page %></span>
+            <% elsif page.gap? %>
+              <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">...</span>
+            <% else %>
+              <%= link_to page, url_for(page: page), class: "relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50" %>
+            <% end %>
+          <% end %>
+          <%= next_page_tag class: "relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" %>
+          <%= last_page_tag class: "relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" %>
+        </nav>
+      </div>
+    </div>
+  </nav>
+<% end %>

@@ -1,0 +1,32 @@
+<div class="space-y-6">
+  <h1 class="text-2xl font-bold text-gray-900">Панель управления аудитора</h1>
+
+  <!-- Статистика -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <div class="bg-white rounded-lg shadow p-6">
+      <div class="text-sm text-gray-500">На проверке</div>
+      <div class="text-3xl font-bold text-gray-900"><%= @pending_count %></div>
+    </div>
+    <div class="bg-white rounded-lg shadow p-6 border-l-4 border-red-500">
+      <div class="text-sm text-gray-500">Не соответствует</div>
+      <div class="text-3xl font-bold text-red-600"><%= @stats[:red] %></div>
+    </div>
+    <div class="bg-white rounded-lg shadow p-6 border-l-4 border-yellow-500">
+      <div class="text-sm text-gray-500">Частичное соответствие</div>
+      <div class="text-3xl font-bold text-yellow-600"><%= @stats[:yellow] %></div>
+    </div>
+    <div class="bg-white rounded-lg shadow p-6 border-l-4 border-green-500">
+      <div class="text-sm text-gray-500">Соответствует</div>
+      <div class="text-3xl font-bold text-green-600"><%= @stats[:green] %></div>
+    </div>
+  </div>
+
+  <!-- Быстрые действия -->
+  <div class="bg-white rounded-lg shadow p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4">Быстрые действия</h2>
+    <div class="flex space-x-4">
+      <%= link_to "Загрузить КЛ", upload_cabinet_auditors_advisory_sheets_path, class: "bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors" %>
+      <%= link_to "Просмотр результатов", cabinet_auditors_advisory_sheets_path, class: "bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors" %>
+    </div>
+  </div>
+</div>

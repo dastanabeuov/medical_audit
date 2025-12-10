@@ -1,38 +1,52 @@
-<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-  <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-    <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company" class="mx-auto h-10 w-auto" />
-    <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-white">Sign in to your account</h2>
-  </div>
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600">
+  <div class="max-w-4xl mx-auto px-4">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold text-white mb-4">Медицинский аудит КЛ</h1>
+      <p class="text-xl text-blue-100">Система проверки консультативных листов на соответствие протоколам МЗ РК</p>
+    </div>
 
-  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form action="#" method="POST" class="space-y-6">
-      <div>
-        <label for="email" class="block text-sm/6 font-medium text-gray-100">Email address</label>
-        <div class="mt-2">
-          <input id="email" type="email" name="email" required autocomplete="email" class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
-        </div>
-      </div>
-
-      <div>
-        <div class="flex items-center justify-between">
-          <label for="password" class="block text-sm/6 font-medium text-gray-100">Password</label>
-          <div class="text-sm">
-            <a href="#" class="font-semibold text-indigo-400 hover:text-indigo-300">Forgot password?</a>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Вход для аудиторов -->
+      <div class="bg-white rounded-lg shadow-xl p-6 transform hover:scale-105 transition-transform">
+        <div class="text-center">
+          <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
           </div>
-        </div>
-        <div class="mt-2">
-          <input id="password" type="password" name="password" required autocomplete="current-password" class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
+          <h2 class="text-xl font-semibold text-gray-800 mb-2">Аудитор</h2>
+          <p class="text-gray-600 mb-4">Загрузка и проверка консультативных листов</p>
+          <%= link_to "Войти", new_auditor_session_path, class: "inline-block bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors" %>
         </div>
       </div>
 
-      <div>
-        <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Sign in</button>
+      <!-- Вход для главных врачей -->
+      <div class="bg-white rounded-lg shadow-xl p-6 transform hover:scale-105 transition-transform">
+        <div class="text-center">
+          <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+          </div>
+          <h2 class="text-xl font-semibold text-gray-800 mb-2">Главный врач</h2>
+          <p class="text-gray-600 mb-4">Управление подчиненными и уведомления</p>
+          <%= link_to "Войти", new_main_doctor_session_path, class: "inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors" %>
+        </div>
       </div>
-    </form>
 
-    <p class="mt-10 text-center text-sm/6 text-gray-400">
-      Not a member?
-      <a href="#" class="font-semibold text-indigo-400 hover:text-indigo-300">Start a 14 day free trial</a>
-    </p>
+      <!-- Вход для врачей -->
+      <div class="bg-white rounded-lg shadow-xl p-6 transform hover:scale-105 transition-transform">
+        <div class="text-center">
+          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+            </svg>
+          </div>
+          <h2 class="text-xl font-semibold text-gray-800 mb-2">Врач</h2>
+          <p class="text-gray-600 mb-4">Личный кабинет и уведомления</p>
+          <%= link_to "Войти", new_doctor_session_path, class: "inline-block bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors" %>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

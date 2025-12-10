@@ -9,7 +9,7 @@ class AdvisorySheetUploadService
 
       files.each do |file|
         result = process_single_file(file, auditor)
-
+        
         if result[:success]
           results[:success] += 1
         else
@@ -25,12 +25,12 @@ class AdvisorySheetUploadService
     def process_single_file(file, auditor)
       # Парсим содержимое файла
       content = FileParserService.parse_uploaded_file(file)
-
+      
       return { success: false, error: "Не удалось прочитать файл" } if content.blank?
 
       # Извлекаем номер записи
       recording = extract_recording(content)
-
+      
       return { success: false, error: "Не найден номер записи по приему" } if recording.blank?
 
       # Создаем запись в not_verified_advisory_sheets

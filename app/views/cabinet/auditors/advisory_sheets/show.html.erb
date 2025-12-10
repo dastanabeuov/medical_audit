@@ -1,0 +1,50 @@
+<div class="max-w-4xl mx-auto space-y-6">
+  <div class="flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-gray-900">Консультативный лист #<%= @sheet.recording %></h1>
+    <%= link_to "← Назад", cabinet_auditors_advisory_sheets_path, class: "text-blue-600 hover:text-blue-800" %>
+  </div>
+
+  <!-- Статус -->
+  <div class="bg-white rounded-lg shadow p-6">
+    <div class="flex items-center space-x-4">
+      <span class="inline-block w-6 h-6 rounded-full" style="background-color: <%= @sheet.status_color %>"></span>
+      <span class="text-xl font-semibold"><%= @sheet.status_label %></span>
+    </div>
+  </div>
+
+  <!-- Результат проверки -->
+  <div class="bg-white rounded-lg shadow p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4">Результат проверки</h2>
+    <p class="text-gray-700 whitespace-pre-wrap"><%= @sheet.verification_result %></p>
+  </div>
+
+  <% if @sheet.recommendations.present? %>
+    <div class="bg-yellow-50 rounded-lg shadow p-6 border-l-4 border-yellow-500">
+      <h2 class="text-lg font-semibold text-yellow-800 mb-4">Рекомендации</h2>
+      <p class="text-yellow-700 whitespace-pre-wrap"><%= @sheet.recommendations %></p>
+    </div>
+  <% end %>
+
+  <!-- Содержимое КЛ -->
+  <div class="bg-white rounded-lg shadow p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4">Содержимое консультативного листа</h2>
+    <div class="bg-gray-50 rounded p-4 max-h-96 overflow-y-auto">
+      <pre class="text-sm text-gray-700 whitespace-pre-wrap"><%= @sheet.body %></pre>
+    </div>
+  </div>
+
+  <!-- Метаданные -->
+  <div class="bg-white rounded-lg shadow p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4">Информация</h2>
+    <dl class="grid grid-cols-2 gap-4 text-sm">
+      <div>
+        <dt class="text-gray-500">Дата проверки</dt>
+        <dd class="font-medium"><%= @sheet.verified_at&.strftime("%d.%m.%Y %H:%M") %></dd>
+      </div>
+      <div>
+        <dt class="text-gray-500">Исходный файл</dt>
+        <dd class="font-medium"><%= @sheet.original_filename || "—" %></dd>
+      </div>
+    </dl>
+  </div>
+</div>
