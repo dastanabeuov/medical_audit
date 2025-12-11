@@ -4,25 +4,24 @@
 # Обеспечивает генерацию эмбеддингов и проверку КЛ
 class GeminiService
   EMBEDDING_MODEL = "text-embedding-004"
-  CHAT_MODEL = "gemini-2.0-flash"
+  CHAT_MODEL = "gemini-2.0-flash-001"
   EMBEDDING_DIMENSION = 768
 
   class << self
-    def client
-      @client ||= RubyLLM.client(:gemini, api_key: ENV.fetch("GEMINI_API_KEY"))
-    end
-
     # Генерация эмбеддинга для текста
     def generate_embedding(text)
       return Array.new(EMBEDDING_DIMENSION, 0.0) if text.blank?
 
-      response = client.embed(
-        model: EMBEDDING_MODEL,
-        input: text.truncate(8000)
+      response = RubyLLM.embed(
+        text.truncate(8000),
+        model: EMBEDDING_MODEL
       )
-      response.embedding
+
+      # RubyLLM.embed возвращает объект RubyLLM::Embedding с методом .vectors
+      response.vectors
     rescue StandardError => e
-      Rails.logger.error("GeminiService embedding error: #{e.message}")
+      Rails.logger.error("GeminiService embedding error: #{e.class} - #{e.message}")
+      Rails.logger.error(e.backtrace.first(5).join("\n"))
       Array.new(EMBEDDING_DIMENSION, 0.0)
     end
 
@@ -30,15 +29,13 @@ class GeminiService
     def verify_advisory_sheet(sanitized_content, relevant_protocols, relevant_mkbs)
       prompt = build_verification_prompt(sanitized_content, relevant_protocols, relevant_mkbs)
 
-      response = client.chat(
-        model: CHAT_MODEL,
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.1
-      )
+      chat = RubyLLM.chat(model: CHAT_MODEL)
+      response = chat.ask(prompt)
 
-      parse_verification_response(response.content)
+      parse_verification_response(response)
     rescue StandardError => e
-      Rails.logger.error("GeminiService verification error: #{e.message}")
+      Rails.logger.error("GeminiService verification error: #{e.class} - #{e.message}")
+      Rails.logger.error(e.backtrace.first(5).join("\n"))
       { status: :yellow, result: "Ошибка проверки: #{e.message}", recommendations: "" }
     end
 
@@ -76,7 +73,10 @@ class GeminiService
       PROMPT
     end
 
-    def parse_verification_response(content)
+    def parse_verification_response(response)
+      # Извлекаем текстовое содержимое из RubyLLM::Message
+      content = response.respond_to?(:content) ? response.content : response.to_s
+
       # Извлекаем JSON из ответа
       json_match = content.match(/\{[\s\S]*\}/)
       return default_response unless json_match
