@@ -23,13 +23,33 @@ module Cabinet
       def create
         files = params[:files]
 
+        # Временная отладка - удалите после исправления
+        # Rails.logger.info "=" * 50
+        # Rails.logger.info "FILES RAW: #{files.inspect}"
+        # Rails.logger.info "FILES CLASS: #{files.class}"
+        # if files.present?
+        #   files.each_with_index do |f, i|
+        #     Rails.logger.info "FILE[#{i}] CLASS: #{f.class}, VALUE: #{f.inspect[0..100]}"
+        #   end
+        # end
+        # Rails.logger.info "=" * 50
+        ###############################################
+
         if files.blank?
           redirect_to upload_cabinet_auditors_advisory_sheets_path, alert: "Выберите файлы для загрузки"
           return
         end
 
+        # Фильтруем только реальные файлы
+        uploaded_files = files.reject { |f| f.is_a?(String) || f.blank? }
+
+        if uploaded_files.empty?
+          redirect_to upload_cabinet_auditors_advisory_sheets_path, alert: "Не найдено корректных файлов"
+          return
+        end
+
         # Обработка файлов
-        result = AdvisorySheetUploadService.process_files(files, current_auditor)
+        result = AdvisorySheetUploadService.process_files(uploaded_files, current_auditor)
 
         if result[:success] > 0
           # Запускаем проверку загруженных КЛ
