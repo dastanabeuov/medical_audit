@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# Запускаем Sphinx если он ещё не запущен
+bundle exec rake ts:start 2>/dev/null || echo "Sphinx already running or started"
+
+# Держим процесс активным - следим за логом Sphinx
+echo "Sphinx daemon is ready. Monitoring..."
+
+# Бесконечный цикл для поддержания процесса активным
+while true; do
+  sleep 60
+  # Проверяем, что sphinx всё ещё работает
+  if ! pgrep -f searchd > /dev/null; then
+    echo "Sphinx stopped, restarting..."
+    bundle exec rake ts:start 2>/dev/null
+  fi
+done

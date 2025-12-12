@@ -1,4 +1,5 @@
 # Procfile.dev
 web: bin/rails server -p 3000
 css: bin/rails tailwindcss:watch
-#worker: bundle exec rake solid_queue:start
+sphinx: bin/sphinx-dev
+worker: bundle exec sidekiq
