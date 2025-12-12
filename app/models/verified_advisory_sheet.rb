@@ -1,4 +1,6 @@
 class VerifiedAdvisorySheet < ApplicationRecord
+  ThinkingSphinx::Callbacks.append(self, behaviours: [ :real_time ])
+
   belongs_to :auditor, optional: true
 
   enum :status, { red: 0, yellow: 1, green: 2 }
@@ -10,10 +12,10 @@ class VerifiedAdvisorySheet < ApplicationRecord
   scope :by_status, ->(status) { where(status: status) }
   scope :by_recording, ->(recording) { where("recording ILIKE ?", "%#{recording}%") }
   scope :by_body, ->(body) { where("body ILIKE ?", "%#{body}%") }
-  # scope :search, ->(query) {
-  #   return all if query.blank?
-  #   where("recording ILIKE :q OR body ILIKE :q", q: "%#{query}%")
-  # }
+  scope :search_text, ->(query) {
+    return all if query.blank?
+    where("recording ILIKE :q OR body ILIKE :q", q: "%#{query}%")
+  }
 
   def status_color
     case status

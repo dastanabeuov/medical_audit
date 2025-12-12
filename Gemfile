@@ -95,7 +95,7 @@ gem "redis", "~> 5.4", ">= 5.4.1"
 gem "mission_control-jobs" # Job monitoring UI
 
 # monitor add migration table
-#gem "strong_migrations", "~> 2.5"
+# gem "strong_migrations", "~> 2.5"
 
 # Authenticate build [https://github.com/heartcombo/devise]
 gem "devise-i18n", "~> 1.12"

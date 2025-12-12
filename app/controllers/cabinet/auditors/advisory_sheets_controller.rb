@@ -8,7 +8,7 @@ module Cabinet
         @search = params[:search]
 
         @sheets = fetch_sheets
-        @sheets = @sheets.search(@search) if @search.present?
+        @sheets = @sheets.search_text(@search) if @search.present?
         @sheets = @sheets.page(params[:page]).per(20)
       end
 
