@@ -1,4 +1,8 @@
 kz:
+  are_you_sure: "Жойғыңыз келетініне сенімдісіз бе?"
+  not_destroyed: "Жойылмады"
+  destroyed: "Сәтті жойылды"
+  destroy: "Жою"
   activerecord:
     models:
       auditor: Аудитор

@@ -1,4 +1,8 @@
 ru:
+  are_you_sure: "Are you sure you want to delete?"
+  not_destroyed: "Not destroyed"
+  destroyed: "Successfull destroyed"
+  destroy: "Destroy"
   activerecord:
     models:
       auditor: Auditor
