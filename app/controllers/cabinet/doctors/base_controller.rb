@@ -4,7 +4,7 @@ module Cabinet
   module Doctors
     class BaseController < ApplicationController
       before_action :authenticate_doctor!
-      layout "cabinet"
+      layout "doctor"
 
       private
 

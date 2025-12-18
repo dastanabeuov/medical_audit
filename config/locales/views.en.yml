@@ -1,0 +1,69 @@
+en:
+  views:
+    devise:
+      sessions:
+        title:
+          auditor: "Auditor Sign In"
+          main_doctor: "Main Doctor Sign In"
+          doctor: "Doctor Sign In"
+        email: "Email"
+        password: "Password"
+        remember_me: "Remember me"
+        submit: "Sign In"
+        back_to_home: "← Back to Home"
+      registrations:
+        new:
+          title:
+            auditor: "Auditor Registration"
+            main_doctor: "Main Doctor Registration"
+            doctor: "Doctor Registration"
+          submit: "Sign Up"
+        edit:
+          title: "Edit Profile"
+          submit: "Update"
+          cancel_account: "Cancel my account"
+          cancel_confirm: "Are you sure?"
+          unhappy: "Unhappy?"
+          leave_blank: "leave blank if you don't want to change it"
+          current_password_hint: "we need your current password to confirm your changes"
+        first_name: "First Name"
+        last_name: "Last Name"
+        position: "Position"
+        department: "Department"
+        specialization: "Specialization"
+        password_confirmation: "Password Confirmation"
+        current_password: "Current Password"
+        password_hint: "minimum %{count} characters"
+      passwords:
+        new:
+          title: "Forgot your password?"
+          submit: "Send instructions"
+        edit:
+          title: "Change Password"
+          new_password: "New Password"
+          confirm_password: "Confirm New Password"
+          submit: "Change Password"
+      confirmations:
+        new:
+          title: "Resend confirmation instructions"
+          submit: "Send instructions"
+      unlocks:
+        new:
+          title: "Resend unlock instructions"
+          submit: "Send instructions"
+      shared:
+        minimum_password_length: "minimum %{count} characters"
+
+    locale:
+      switch: "Switch Language"
+      changed: "Language successfully changed"
+      invalid: "Invalid language"
+      languages:
+        ru: "Русский"
+        kz: "Қазақша"
+        en: "English"
+
+    common:
+      back: "Back"
+      home: "Home"
+      or: "or"

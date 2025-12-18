@@ -1,0 +1,69 @@
+kz:
+  views:
+    devise:
+      sessions:
+        title:
+          auditor: "Аудитор үшін кіру"
+          main_doctor: "Бас дәрігер үшін кіру"
+          doctor: "Дәрігер үшін кіру"
+        email: "Email"
+        password: "Құпия сөз"
+        remember_me: "Мені есте сақта"
+        submit: "Кіру"
+        back_to_home: "← Басты бетке"
+      registrations:
+        new:
+          title:
+            auditor: "Аудитор тіркелуі"
+            main_doctor: "Бас дәрігер тіркелуі"
+            doctor: "Дәрігер тіркелуі"
+          submit: "Тіркелу"
+        edit:
+          title: "Профильді өңдеу"
+          submit: "Жаңарту"
+          cancel_account: "Тіркелгіні жою"
+          cancel_confirm: "Сіз сенімдісіз бе?"
+          unhappy: "Қанағаттанбадыңыз ба?"
+          leave_blank: "өзгерткіңіз келмесе бос қалдырыңыз"
+          current_password_hint: "өзгерістерді растау үшін ағымдағы құпия сөз қажет"
+        first_name: "Аты"
+        last_name: "Тегі"
+        department: "Департамент"
+        specialization: "Мамандану"
+        position: "Лауазымы"
+        password_confirmation: "Құпия сөзді растау"
+        current_password: "Ағымдағы құпия сөз"
+        password_hint: "кемінде %{count} таңба"
+      passwords:
+        new:
+          title: "Құпия сөзді ұмыттыңыз ба?"
+          submit: "Нұсқауларды жіберу"
+        edit:
+          title: "Құпия сөзді өзгерту"
+          new_password: "Жаңа құпия сөз"
+          confirm_password: "Жаңа құпия сөзді растаңыз"
+          submit: "Құпия сөзді өзгерту"
+      confirmations:
+        new:
+          title: "Нұсқауларды қайта жіберу"
+          submit: "Нұсқауларды жіберу"
+      unlocks:
+        new:
+          title: "Бұғаттан шығару нұсқауларын қайта жіберу"
+          submit: "Нұсқауларды жіберу"
+      shared:
+        minimum_password_length: "кемінде %{count} таңба"
+
+    locale:
+      switch: "Тілді ауыстыру"
+      changed: "Тіл сәтті өзгертілді"
+      invalid: "Жарамсыз тіл"
+      languages:
+        ru: "Русский"
+        kz: "Қазақша"
+        en: "English"
+
+    common:
+      back: "Артқа"
+      home: "Басты бетке"
+      or: "немесе"

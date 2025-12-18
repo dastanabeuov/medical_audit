@@ -1,0 +1,30 @@
+kz:
+  activerecord:
+    models:
+      auditor: Аудитор
+      main_doctor: Главный врач
+      doctor: Врач
+      protocol: Протокол
+      mkb: МКБ
+      not_verified_advisory_sheet: Тексерілмеген кеңес парағы
+      verified_advisory_sheet: Тексерілген кеңес парағы
+    attributes:
+      auditor:
+        email: Пошта
+        password: Құпия сөз
+        first_name: Аты
+        last_name: Тегі
+      verified_advisory_sheet:
+        recording: Нөмірді жазу
+        body: Мәтінмән
+        status: Статус
+        verification_result: Тексеру нәтижесі
+        recommendations: Ұсыныстар
+        
+  views:
+    pagination:
+      first: "&laquo; Бірінші"
+      last: "Соңғысы &raquo;"
+      previous: "&lsaquo; Артқа"
+      next: "Алға &rsaquo;"
+      truncate: "&hellip;"

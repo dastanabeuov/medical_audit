@@ -10,7 +10,7 @@ ru:
       verified_advisory_sheet: Проверенный КЛ
     attributes:
       auditor:
-        email: Email
+        email: Почта
         password: Пароль
         first_name: Имя
         last_name: Фамилия
@@ -20,14 +20,6 @@ ru:
         status: Статус
         verification_result: Результат проверки
         recommendations: Рекомендации
-
-  devise:
-    sessions:
-      signed_in: "Вы успешно вошли в систему."
-      signed_out: "Вы вышли из системы."
-    failure:
-      invalid: "Неверный email или пароль."
-      not_found_in_database: "Неверный email или пароль."
 
   views:
     pagination:

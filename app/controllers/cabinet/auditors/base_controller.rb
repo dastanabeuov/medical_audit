@@ -4,7 +4,7 @@ module Cabinet
   module Auditors
     class BaseController < ApplicationController
       before_action :authenticate_auditor!
-      layout "cabinet"
+      layout "auditor"
 
       private
 
