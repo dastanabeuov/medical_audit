@@ -3,7 +3,7 @@
 module Cabinet
   module Auditors
     class SessionsController < Devise::SessionsController
-      layout "cabinet"
+      layout "auditor"
 
       protected
 

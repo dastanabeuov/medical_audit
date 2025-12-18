@@ -1,0 +1,42 @@
+<div class="mt-8 text-center space-y-3">
+  <div class="space-y-2">
+    <%- if controller_name != "sessions" %>
+      <%= link_to new_session_path(resource_name), class: "#{link_class(resource_name)} block" do %>
+        <span><%= t("devise.shared.links.sign_in") %></span>
+      <% end %>
+    <% end %>
+
+    <%- if devise_mapping.registerable? && controller_name != "registrations" %>
+      <%= link_to new_registration_path(resource_name), class: "#{link_class(resource_name)} block" do %>
+        <span><%= t("devise.shared.links.sign_up") %></span>
+      <% end %>
+    <% end %>
+
+    <%- if devise_mapping.recoverable? && controller_name != "passwords" && controller_name != "registrations" %>
+      <%= link_to new_password_path(resource_name), class: "#{link_class(resource_name)} block text-sm" do %>
+        <span><%= t("devise.shared.links.forgot_password") %></span>
+      <% end %>
+    <% end %>
+
+    <%- if devise_mapping.confirmable? && controller_name != "confirmations" %>
+      <%= link_to new_confirmation_path(resource_name), class: "#{link_class(resource_name)} block text-sm" do %>
+        <span><%= t("devise.shared.links.didnt_receive_confirmation") %></span>
+      <% end %>
+    <% end %>
+
+    <%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != "unlocks" %>
+      <%= link_to new_unlock_path(resource_name), class: "#{link_class(resource_name)} block text-sm" do %>
+        <span><%= t("devise.shared.links.didnt_receive_unlock") %></span>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="border-t border-gray-200 pt-4 mt-4">
+    <%= link_to root_path, class: "text-gray-500 hover:text-gray-700 text-sm font-medium transition-colors duration-200 inline-flex items-center" do %>
+      <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+      </svg>
+      <%= t("views.devise.sessions.back_to_home", default: "На главную") %>
+    <% end %>
+  </div>
+</div>

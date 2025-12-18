@@ -6,19 +6,37 @@ Rails.application.routes.draw do
   # Devise routes для трех типов пользователей
   scope :cabinet do
     devise_for :auditors,
-               controllers: { sessions: "cabinet/auditors/sessions" },
+               controllers: {
+                 sessions: "cabinet/auditors/sessions",
+                 registrations: "cabinet/auditors/registrations",
+                 passwords: "cabinet/auditors/passwords",
+                 confirmations: "cabinet/auditors/confirmations",
+                 unlocks: "cabinet/auditors/unlocks"
+               },
                path: "auditors",
-               path_names: { sign_in: "login", sign_out: "logout" }
+               path_names: { sign_in: "login", sign_out: "logout", sign_up: "register" }
 
     devise_for :main_doctors,
-               controllers: { sessions: "cabinet/main_doctors/sessions" },
+               controllers: {
+                 sessions: "cabinet/main_doctors/sessions",
+                 registrations: "cabinet/main_doctors/registrations",
+                 passwords: "cabinet/main_doctors/passwords",
+                 confirmations: "cabinet/main_doctors/confirmations",
+                 unlocks: "cabinet/main_doctors/unlocks"
+               },
                path: "main_doctors",
-               path_names: { sign_in: "login", sign_out: "logout" }
+               path_names: { sign_in: "login", sign_out: "logout", sign_up: "register" }
 
     devise_for :doctors,
-               controllers: { sessions: "cabinet/doctors/sessions" },
+               controllers: {
+                 sessions: "cabinet/doctors/sessions",
+                 registrations: "cabinet/doctors/registrations",
+                 passwords: "cabinet/doctors/passwords",
+                 confirmations: "cabinet/doctors/confirmations",
+                 unlocks: "cabinet/doctors/unlocks"
+               },
                path: "doctors",
-               path_names: { sign_in: "login", sign_out: "logout" }
+               path_names: { sign_in: "login", sign_out: "logout", sign_up: "register" }
   end
 
   # Кабинет аудитора

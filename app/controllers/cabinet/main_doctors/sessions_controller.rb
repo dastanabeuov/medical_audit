@@ -3,7 +3,7 @@
 module Cabinet
   module MainDoctors
     class SessionsController < Devise::SessionsController
-      layout "cabinet"
+      layout "main_doctor"
 
       protected
 
