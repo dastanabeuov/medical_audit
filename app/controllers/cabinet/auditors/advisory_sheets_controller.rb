@@ -3,6 +3,7 @@
 module Cabinet
   module Auditors
     class AdvisorySheetsController < BaseController
+      before_action :set_sheet, only: [ :show, :destroy ]
       def index
         @tab = params[:tab] || "all"
         @search = params[:search]
@@ -13,7 +14,6 @@ module Cabinet
       end
 
       def show
-        @sheet = VerifiedAdvisorySheet.find(params[:id])
       end
 
       def upload
@@ -22,18 +22,6 @@ module Cabinet
 
       def create
         files = params[:files]
-
-        # Временная отладка - удалите после исправления
-        # Rails.logger.info "=" * 50
-        # Rails.logger.info "FILES RAW: #{files.inspect}"
-        # Rails.logger.info "FILES CLASS: #{files.class}"
-        # if files.present?
-        #   files.each_with_index do |f, i|
-        #     Rails.logger.info "FILE[#{i}] CLASS: #{f.class}, VALUE: #{f.inspect[0..100]}"
-        #   end
-        # end
-        # Rails.logger.info "=" * 50
-        ###############################################
 
         if files.blank?
           redirect_to upload_cabinet_auditors_advisory_sheets_path, alert: "Выберите файлы для загрузки"
@@ -65,7 +53,19 @@ module Cabinet
         redirect_to cabinet_auditors_advisory_sheets_path
       end
 
+      def destroy
+        if @sheet.destroy
+          redirect_to cabinet_auditors_advisory_sheets_path, notice: I18n.t(".destroyed")
+        else
+          redirect_to cabinet_auditors_advisory_sheets_path, alert: I18n.t(".not_destroyed")
+        end
+      end
+
       private
+
+      def set_sheet
+        @sheet = VerifiedAdvisorySheet.find(params[:id])
+      end
 
       def fetch_sheets
         base = VerifiedAdvisorySheet.where(auditor: current_auditor).order(created_at: :desc)

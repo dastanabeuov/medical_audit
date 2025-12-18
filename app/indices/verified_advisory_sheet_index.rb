@@ -3,6 +3,9 @@ ThinkingSphinx::Index.define :verified_advisory_sheet, with: :real_time do
   indexes recording, sortable: true
   indexes body
   indexes status, sortable: true
+  indexes original_filename
+  indexes created_at
+  indexes updated_at
 
   # attributes
   has auditor_id,  type: :integer

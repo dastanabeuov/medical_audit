@@ -1,4 +1,8 @@
 ru:
+  are_you_sure: "Вы уверены, что хотите удалить?"
+  not_destroyed: "Не уничтожено"
+  destroyed: "Успешно уничтожено"
+  destroy: "Удалить"
   activerecord:
     models:
       auditor: Аудитор

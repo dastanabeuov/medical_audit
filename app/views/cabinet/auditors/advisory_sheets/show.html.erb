@@ -47,4 +47,21 @@
       </div>
     </dl>
   </div>
+
+  <!-- Действие -->
+  <div class="bg-white rounded-lg shadow p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4">Действие</h2>
+    <dl class="grid grid-cols-1 gap-4 text-sm">
+      <div>
+        <%= button_to cabinet_auditors_advisory_sheet_path(@sheet),
+            method: :delete,
+            data: { turbo_confirm: t('are_you_sure') },
+            class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded",
+            title: t('destroy') do %>
+          <i class="bi bi-trash3-fill"></i>
+          <%= t('destroy') %>
+        <% end %>
+      </div>
+    </dl>
+  </div>
 </div>

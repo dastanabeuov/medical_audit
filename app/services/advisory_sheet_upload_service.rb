@@ -49,11 +49,15 @@ class AdvisorySheetUploadService
 
       return { success: false, error: "Не найден номер записи по приему" } if recording.blank?
 
+      # Извлекаем ФИО пациента из содержимого для использования в качестве имени файла
+      patient_name = PersonalDataSanitizerService.extract_patient_name(content)
+      filename_to_use = patient_name.present? ? patient_name : filename
+
       sheet = NotVerifiedAdvisorySheet.new(
         recording: recording,
         body: content,
         auditor: auditor,
-        original_filename: filename
+        original_filename: filename_to_use
       )
 
       if sheet.save
