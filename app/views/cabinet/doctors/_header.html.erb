@@ -1,19 +1,53 @@
-<nav class="bg-green-100 shadow-lg">
+<header class="bg-green-100 shadow">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between h-16">
-      <div class="flex items-center">
-        <a href="/" class="text-xl font-bold text-blue-600">МедАудит КЛ</a>
+    <div class="flex justify-between h-16 items-center">
+
+      <!-- Название приложения -->
+      <div class="flex-shrink-0">
+        <h1 class="text-xl font-bold text-blue-800">МедАудит КЛ</h1>
       </div>
-      <div class="flex items-center space-x-4">
-        <% if current_doctor %>
-          <span class="text-gray-600">Врач: <%= current_doctor.full_name %></span>
-          <%= link_to "Выход", 
-              destroy_doctor_session_path, 
-              method: :delete, 
-              data: { turbo_method: :delete }, 
-              class: "text-red-600 hover:text-red-800" %>
-        <% end %>
-      </div>
+
+      <% if current_doctor %>
+        <!-- Аккаунт с dropdown -->
+        <div class="relative" data-controller="dropdown-account-link">
+          <button 
+            data-action="click->dropdown-account-link#toggle"
+            class="flex items-center space-x-2 rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500 px-3 py-2"
+          >
+            <!-- Аватарка -->
+            <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 font-semibold">
+              <%= current_doctor.full_name[0] %>
+            </div>
+
+            <!-- Имя и стрелка -->
+            <span class="font-medium text-gray-700"><%= current_doctor.full_name %></span>
+            <svg 
+              data-dropdown-account-link-target="icon"
+              class="h-5 w-5 text-gray-500 transition-transform duration-200"
+              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          <!-- Dropdown меню -->
+          <div 
+            data-dropdown-account-link-target="menu"
+            class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+          >
+            <div class="py-1">
+              <%= link_to "Настройки профиля", edit_doctor_registration_path,
+                    class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
+
+              <%= link_to "Выход", destroy_doctor_session_path,
+                    method: :delete,
+                    data: { turbo_method: :delete },
+                    class: "block px-4 py-2 text-red-600 hover:bg-gray-100" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
     </div>
   </div>
-</nav>
+</header>

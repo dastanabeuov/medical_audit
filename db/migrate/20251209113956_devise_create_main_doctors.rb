@@ -5,9 +5,13 @@ class DeviseCreateMainDoctors < ActiveRecord::Migration[8.0]
     create_table :main_doctors do |t|
       # Custom fields
       t.string :first_name
+      t.string :second_name
       t.string :last_name
       t.string :department
       t.string :specialization
+      t.string :clinic
+      t.datetime :date_of_employment
+      t.string :doctor_identifier
 
       ## Database authenticatable
       t.string :email,              null: false, default: ""

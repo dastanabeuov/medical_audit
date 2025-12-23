@@ -1,7 +1,7 @@
 class NotVerifiedAdvisorySheet < ApplicationRecord
   belongs_to :auditor, optional: true
 
-  validates :recording, presence: true
+  validates :recording, presence: true, uniqueness: true
   validates :body, presence: true
 
   scope :pending, -> { all }

@@ -111,6 +111,27 @@ class PersonalDataSanitizerService
       full_name.gsub(/\s+/, " ").gsub("*", "").strip
     end
 
+    # Извлечение ИИН врача из КЛ (ДО санитизации!)
+    # Ищет ИИН после упоминания врача в КЛ
+    # @param content [String] - исходный текст КЛ
+    # @return [String, nil] - ИИН врача (12 цифр) или nil
+    def extract_doctor_iin(content)
+      return nil if content.blank?
+
+      # Паттерн: "Врач:", "Доктор:", "Лечащий врач:" и т.д. + ИИН (12 цифр)
+      # Ищем в пределах 200 символов после упоминания врача
+      doctor_section_pattern = /(?:врач|доктор|лечащий\s+врач|специалист)[\s:]*([^\n]{1,200})/i
+
+      content.scan(doctor_section_pattern) do |match|
+        doctor_line = match[0]
+        # Ищем 12-значный ИИН в этой строке
+        iin_match = doctor_line.match(/\b(\d{12})\b/)
+        return iin_match[1] if iin_match
+      end
+
+      nil
+    end
+
     private
 
     def mask_name(name)

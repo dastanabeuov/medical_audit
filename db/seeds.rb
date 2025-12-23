@@ -9,6 +9,7 @@ auditor = Auditor.find_or_create_by!(email: "auditor@test.kz") do |a|
   a.first_name = "Тест"
   a.last_name = "Аудитор"
   a.position = "Старший аудитор"
+  a.main_auditor = true
 end
 auditor.skip_confirmation!
 auditor.save!
@@ -22,6 +23,8 @@ main_doctor = MainDoctor.find_or_create_by!(email: "main_doctor@test.kz") do |md
   md.last_name = "Главврач"
   md.department = "Терапия"
   md.specialization = "Терапевт"
+  md.clinic = "Желтоксан"
+  md.date_of_employment = "10.08.2025"
 end
 main_doctor.skip_confirmation!
 main_doctor.save!
@@ -34,6 +37,9 @@ doctor = Doctor.find_or_create_by!(email: "doctor@test.kz") do |d|
   d.first_name = "Тест"
   d.last_name = "Врач"
   d.specialization = "Терапевт"
+  d.department = "Терапия"
+  d.clinic = "Желтоксан"
+  d.date_of_employment = "10.02.2025"
   d.main_doctor = main_doctor
 end
 doctor.skip_confirmation!

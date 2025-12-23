@@ -55,6 +55,19 @@ module DeviseHelper
     end
   end
 
+  def header_bg_class(resource_name)
+    case resource_name.to_s
+    when "auditor", "auditors"
+      "bg-red-100"
+    when "main_doctor", "main_doctors"
+      "bg-blue-100"
+    when "doctor", "doctors"
+      "bg-green-100"
+    else
+      "bg-gray-100"
+    end
+  end
+
   # Tailwind классы для input полей
   def input_focus_class(resource_name)
     case resource_name.to_s

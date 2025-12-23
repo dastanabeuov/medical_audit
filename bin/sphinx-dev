@@ -1,17 +1,43 @@
 #!/usr/bin/env bash
 
-# Запускаем Sphinx если он ещё не запущен
-bundle exec rake ts:start 2>/dev/null || echo "Sphinx already running or started"
+# Скрипт для автоматического управления Sphinx в режиме разработки
+# Используется через Procfile.dev
 
-# Держим процесс активным - следим за логом Sphinx
+set -e  # Остановиться при ошибке
+
+echo "Starting Sphinx development daemon..."
+
+# 1. Остановить старый Sphinx (если запущен)
+echo "Stopping existing Sphinx daemon..."
+bundle exec rake ts:stop 2>/dev/null || echo "searchd is not currently running."
+
+# 2. Проверить и пересоздать конфигурацию если нужно
+if [ ! -f "config/development.sphinx.conf" ]; then
+  echo "Configuration not found, generating..."
+  bundle exec rake ts:configure
+fi
+
+# 3. Пересоздать конфигурацию (на случай изменений в индексах)
+echo "Generating configuration to config/development.sphinx.conf"
+bundle exec rake ts:configure
+
+# 4. Запустить Sphinx с автоматической перестройкой индексов
+echo "Starting Sphinx daemon and rebuilding indices..."
+bundle exec rake ts:start
+
+# 5. Перестроить индексы в реальном времени
+echo "Generating index files for verified_advisory_sheet_core"
+bundle exec rake ts:index 2>/dev/null || echo "."
+
 echo "Sphinx daemon is ready. Monitoring..."
 
-# Бесконечный цикл для поддержания процесса активным
+# 6. Мониторинг и автоматический перезапуск
 while true; do
-  sleep 60
-  # Проверяем, что sphinx всё ещё работает
-  if ! pgrep -f searchd > /dev/null; then
-    echo "Sphinx stopped, restarting..."
-    bundle exec rake ts:start 2>/dev/null
+  sleep 30
+
+  # Проверяем, что Sphinx работает
+  if ! pgrep -f "searchd.*development.sphinx.conf" > /dev/null; then
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] Sphinx stopped unexpectedly, restarting..."
+    bundle exec rake ts:start 2>/dev/null || echo "Failed to restart Sphinx"
   fi
 done
