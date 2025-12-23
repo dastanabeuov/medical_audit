@@ -37,12 +37,12 @@ module Cabinet
 
       # If you have extra params to permit, append them to the sanitizer.
       def configure_sign_up_params
-        devise_parameter_sanitizer.permit(:sign_up, keys: [ :first_name, :last_name, :position, :preferred_locale ])
+        devise_parameter_sanitizer.permit(:sign_up, keys: [ :first_name, :second_name, :last_name, :department, :specialization, :clinic, :date_of_employment, :doctor_identifier, :main_doctor_id ])
       end
 
       # If you have extra params to permit, append them to the sanitizer.
       def configure_account_update_params
-        devise_parameter_sanitizer.permit(:account_update, keys: [ :first_name, :last_name, :position, :preferred_locale ])
+        devise_parameter_sanitizer.permit(:account_update, keys: [ :first_name, :second_name, :last_name, :department, :specialization, :clinic, :date_of_employment, :doctor_identifier, :main_doctor_id ])
       end
 
       # The path used after sign up.

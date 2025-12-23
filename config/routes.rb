@@ -48,6 +48,14 @@ Rails.application.routes.draw do
           get :upload
         end
       end
+
+      # Отчеты
+      resource :reports, only: [] do
+        collection do
+          get :export  # GET /cabinet/auditors/reports/export.csv
+          get :summary # GET /cabinet/auditors/reports/summary
+        end
+      end
     end
 
     # Кабинет главного врача

@@ -10,15 +10,63 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_15_063329) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_21_150836) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "vector"
 
+  create_table "advisory_sheet_fields", force: :cascade do |t|
+    t.bigint "verified_advisory_sheet_id", null: false
+    t.text "complaints"
+    t.text "anamnesis_morbi"
+    t.text "anamnesis_vitae"
+    t.text "physical_examination"
+    t.text "study_protocol"
+    t.jsonb "diagnoses", default: {}
+    t.text "referrals"
+    t.text "prescriptions"
+    t.text "recommendations"
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "complaints_comment"
+    t.text "anamnesis_morbi_comment"
+    t.text "anamnesis_vitae_comment"
+    t.text "physical_examination_comment"
+    t.text "study_protocol_comment"
+    t.text "diagnoses_comment"
+    t.text "referrals_comment"
+    t.text "prescriptions_comment"
+    t.text "recommendations_comment"
+    t.text "notes_comment"
+    t.index ["verified_advisory_sheet_id"], name: "index_advisory_sheet_fields_on_verified_advisory_sheet_id", unique: true
+  end
+
+  create_table "advisory_sheet_scores", force: :cascade do |t|
+    t.bigint "verified_advisory_sheet_id", null: false
+    t.decimal "complaints_score", precision: 3, scale: 1, default: "0.0"
+    t.decimal "anamnesis_morbi_score", precision: 3, scale: 1, default: "0.0"
+    t.decimal "anamnesis_vitae_score", precision: 3, scale: 1, default: "0.0"
+    t.decimal "physical_examination_score", precision: 3, scale: 1, default: "0.0"
+    t.decimal "study_protocol_score", precision: 3, scale: 1, default: "0.0"
+    t.decimal "diagnoses_score", precision: 3, scale: 1, default: "0.0"
+    t.decimal "referrals_score", precision: 3, scale: 1, default: "0.0"
+    t.decimal "prescriptions_score", precision: 3, scale: 1, default: "0.0"
+    t.decimal "recommendations_score", precision: 3, scale: 1, default: "0.0"
+    t.decimal "notes_score", precision: 3, scale: 1, default: "0.0"
+    t.decimal "total_score", precision: 4, scale: 1, default: "0.0"
+    t.decimal "percentage", precision: 5, scale: 2, default: "0.0"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["verified_advisory_sheet_id"], name: "index_advisory_sheet_scores_on_verified_advisory_sheet_id", unique: true
+  end
+
   create_table "auditors", force: :cascade do |t|
     t.string "first_name"
+    t.string "second_name"
     t.string "last_name"
     t.string "position"
+    t.boolean "main_auditor", default: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -46,8 +94,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_15_063329) do
 
   create_table "doctors", force: :cascade do |t|
     t.string "first_name"
+    t.string "second_name"
     t.string "last_name"
+    t.string "department"
     t.string "specialization"
+    t.string "clinic"
+    t.datetime "date_of_employment"
+    t.string "doctor_identifier"
     t.bigint "main_doctor_id"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -77,9 +130,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_15_063329) do
 
   create_table "main_doctors", force: :cascade do |t|
     t.string "first_name"
+    t.string "second_name"
     t.string "last_name"
     t.string "department"
     t.string "specialization"
+    t.string "clinic"
+    t.datetime "date_of_employment"
+    t.string "doctor_identifier"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -140,6 +197,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_15_063329) do
     t.index ["title"], name: "index_protocols_on_title"
   end
 
+  create_table "relationships_doctor_and_verified_advisory_sheets", force: :cascade do |t|
+    t.bigint "verified_advisory_sheet_id", null: false
+    t.bigint "doctor_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["doctor_id"], name: "idx_on_doctor_id_78198b289e"
+    t.index ["verified_advisory_sheet_id"], name: "idx_on_verified_advisory_sheet_id_662a6493fc"
+  end
+
+  create_table "relationships_main_doctor_and_verified_advisory_sheets", force: :cascade do |t|
+    t.bigint "verified_advisory_sheet_id", null: false
+    t.bigint "main_doctor_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["main_doctor_id"], name: "idx_on_main_doctor_id_d1aeb89e77"
+    t.index ["verified_advisory_sheet_id"], name: "idx_on_verified_advisory_sheet_id_d5cd68dd6e"
+  end
+
   create_table "verified_advisory_sheets", force: :cascade do |t|
     t.string "recording", null: false
     t.text "body", null: false
@@ -156,7 +231,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_15_063329) do
     t.index ["status"], name: "index_verified_advisory_sheets_on_status"
   end
 
+  add_foreign_key "advisory_sheet_fields", "verified_advisory_sheets"
+  add_foreign_key "advisory_sheet_scores", "verified_advisory_sheets"
   add_foreign_key "doctors", "main_doctors"
   add_foreign_key "not_verified_advisory_sheets", "auditors"
+  add_foreign_key "relationships_doctor_and_verified_advisory_sheets", "doctors"
+  add_foreign_key "relationships_doctor_and_verified_advisory_sheets", "verified_advisory_sheets"
+  add_foreign_key "relationships_main_doctor_and_verified_advisory_sheets", "main_doctors"
+  add_foreign_key "relationships_main_doctor_and_verified_advisory_sheets", "verified_advisory_sheets"
   add_foreign_key "verified_advisory_sheets", "auditors"
 end

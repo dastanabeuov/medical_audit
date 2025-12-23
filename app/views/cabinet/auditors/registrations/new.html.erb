@@ -16,7 +16,14 @@
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "space-y-5" }) do |f| %>
         <%= render "cabinet/auditors/shared/error_messages", resource: resource %>
 
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <%= f.label :last_name, t('views.devise.registrations.last_name', default: 'Фамилия'), class: "block text-sm font-semibold text-gray-700 mb-2" %>
+            <%= f.text_field :last_name, autocomplete: "family-name",
+                class: "appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-400 #{input_focus_class(:auditor)} transition-colors duration-200 sm:text-sm",
+                placeholder: "Иванов" %>
+          </div>
+
           <div>
             <%= f.label :first_name, t('views.devise.registrations.first_name', default: 'Имя'), class: "block text-sm font-semibold text-gray-700 mb-2" %>
             <%= f.text_field :first_name, autofocus: true, autocomplete: "given-name",
@@ -25,10 +32,10 @@
           </div>
 
           <div>
-            <%= f.label :last_name, t('views.devise.registrations.last_name', default: 'Фамилия'), class: "block text-sm font-semibold text-gray-700 mb-2" %>
-            <%= f.text_field :last_name, autocomplete: "family-name",
+            <%= f.label :second_name, t('views.devise.registrations.second_name', default: 'Отчество'), class: "block text-sm font-semibold text-gray-700 mb-2" %>
+            <%= f.text_field :second_name, autocomplete: "additional-name",
                 class: "appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-400 #{input_focus_class(:auditor)} transition-colors duration-200 sm:text-sm",
-                placeholder: "Иванов" %>
+                placeholder: "Иванович" %>
           </div>
         </div>
 

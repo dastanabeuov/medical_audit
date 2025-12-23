@@ -4,9 +4,11 @@ class DeviseCreateAuditors < ActiveRecord::Migration[8.0]
   def change
     create_table :auditors do |t|
       # Custom fields
-      t.string :first_name
-      t.string :last_name
-      t.string :position
+      t.string  :first_name
+      t.string  :second_name
+      t.string  :last_name
+      t.string  :position
+      t.boolean :main_auditor, default: false
 
       ## Database authenticatable
       t.string :email,              null: false, default: ""

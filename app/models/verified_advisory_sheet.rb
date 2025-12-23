@@ -1,24 +1,46 @@
 class VerifiedAdvisorySheet < ApplicationRecord
   ThinkingSphinx::Callbacks.append(self, behaviours: [ :real_time ])
 
+  max_pages 100
+
   belongs_to :auditor, optional: true
+  has_one :advisory_sheet_field, dependent: :destroy
+  has_one :advisory_sheet_score, dependent: :destroy
 
-  enum :status, { red: 0, yellow: 1, green: 2 }
+  has_many :relationships_doctor_and_verified_advisory_sheets, foreign_key: :verified_advisory_sheet_id
+  has_many :doctors, through: :relationships_doctor_and_verified_advisory_sheets
 
-  validates :recording, presence: true
+  has_many :relationships_main_doctor_and_verified_advisory_sheets, foreign_key: :verified_advisory_sheet_id
+  has_many :main_doctors, through: :relationships_main_doctor_and_verified_advisory_sheets
+
+  enum :status, { red: 0, yellow: 1, green: 2, purple: 3 }
+
+  validates :recording, presence: true, uniqueness: true
   validates :body, presence: true
   validates :status, presence: true
 
   scope :by_status, ->(status) { where(status: status) }
   scope :by_recording, ->(recording) { where("recording ILIKE ?", "%#{recording}%") }
   scope :by_body, ->(body) { where("body ILIKE ?", "%#{body}%") }
-  scope :search_text, ->(query) {
+
+  # Полнотекстовый поиск через Sphinx
+  # Ищет по всем полям: recording, body, original_filename
+  def self.search_text(query)
     return all if query.blank?
-    where("recording ILIKE :q OR body ILIKE :q", q: "%#{query}%")
-  }
+
+    # Используем Sphinx для быстрого полнотекстового поиска
+    # Получаем ID из Sphinx, затем загружаем через ActiveRecord
+    sphinx_results = search(query)
+    ids = sphinx_results.map(&:id)
+
+    # Возвращаем ActiveRecord::Relation для совместимости с цепочками
+    # Сохраняем порядок сортировки по дате создания
+    ids.any? ? where(id: ids).order(created_at: :desc) : none
+  end
 
   def status_color
     case status
+    when "purple" then "#8200DB"
     when "red" then "#EF4444"
     when "yellow" then "#F59E0B"
     when "green" then "#10B981"
@@ -27,6 +49,7 @@ class VerifiedAdvisorySheet < ApplicationRecord
 
   def status_label
     case status
+    when "purple" then "Не удалось проверить"
     when "red" then "Не соответствует"
     when "yellow" then "Частичное соответствие"
     when "green" then "Соответствует"

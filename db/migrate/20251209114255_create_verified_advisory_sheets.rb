@@ -3,7 +3,7 @@ class CreateVerifiedAdvisorySheets < ActiveRecord::Migration[8.0]
     create_table :verified_advisory_sheets do |t|
       t.string :recording, null: false
       t.text :body, null: false
-      t.integer :status, default: 0, null: false  # enum: red, yellow, green
+      t.integer :status, default: 0, null: false  # enum: red, yellow, green, purple
       t.text :verification_result
       t.text :recommendations
       t.references :auditor, foreign_key: true

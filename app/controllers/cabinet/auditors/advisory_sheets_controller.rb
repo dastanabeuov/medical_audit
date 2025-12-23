@@ -8,8 +8,16 @@ module Cabinet
         @tab = params[:tab] || "all"
         @search = params[:search]
 
-        @sheets = fetch_sheets
-        @sheets = @sheets.search_text(@search) if @search.present?
+        # Сначала применяем поиск, затем фильтрацию
+        if @search.present?
+          @sheets = VerifiedAdvisorySheet.search_text(@search)
+          # Применяем фильтр по статусу после поиска
+          @sheets = filter_by_tab(@sheets, @tab)
+          @sheets = @sheets.where(auditor: current_auditor)
+        else
+          @sheets = fetch_sheets
+        end
+
         @sheets = @sheets.page(params[:page]).per(20)
       end
 
@@ -64,21 +72,26 @@ module Cabinet
       private
 
       def set_sheet
-        @sheet = VerifiedAdvisorySheet.find(params[:id])
+        @sheet = VerifiedAdvisorySheet.includes(:advisory_sheet_field, :advisory_sheet_score).find(params[:id])
       end
 
       def fetch_sheets
         base = VerifiedAdvisorySheet.where(auditor: current_auditor).order(created_at: :desc)
+        filter_by_tab(base, @tab)
+      end
 
-        case @tab
+      def filter_by_tab(relation, tab)
+        case tab
+        when "purple"
+          relation.purple
         when "red"
-          base.red
+          relation.red
         when "yellow"
-          base.yellow
+          relation.yellow
         when "green"
-          base.green
+          relation.green
         else
-          base
+          relation
         end
       end
     end
