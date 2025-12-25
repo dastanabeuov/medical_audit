@@ -1,0 +1,160 @@
+<div class="space-y-6">
+  <!-- Заголовок -->
+  <div class="flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-900">Сводная статистика</h1>
+    <div class="flex gap-3">
+      <%= link_to "Назад к списку КЛ", cabinet_auditors_advisory_sheets_path,
+          class: "bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700" %>
+    </div>
+  </div>
+
+  <!-- Общая статистика -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <!-- Всего листов -->
+    <div class="bg-white rounded-lg shadow p-6">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <svg class="h-8 w-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+        <div class="ml-4">
+          <p class="text-sm font-medium text-gray-500">Всего КЛ</p>
+          <p class="text-2xl font-bold text-gray-900"><%= @summary[:total_sheets] %></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- С оценками -->
+    <div class="bg-white rounded-lg shadow p-6">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <svg class="h-8 w-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div class="ml-4">
+          <p class="text-sm font-medium text-gray-500">С оценками</p>
+          <p class="text-2xl font-bold text-gray-900"><%= @summary[:with_scores] %></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Средний балл -->
+    <div class="bg-white rounded-lg shadow p-6">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <svg class="h-8 w-8 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+          </svg>
+        </div>
+        <div class="ml-4">
+          <p class="text-sm font-medium text-gray-500">Средний балл</p>
+          <p class="text-2xl font-bold text-gray-900"><%= number_with_precision(@summary[:average_total_score], precision: 1) %></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Средний процент -->
+    <div class="bg-white rounded-lg shadow p-6">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <svg class="h-8 w-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+        </div>
+        <div class="ml-4">
+          <p class="text-sm font-medium text-gray-500">Средний процент</p>
+          <p class="text-2xl font-bold text-gray-900"><%= number_with_precision(@summary[:average_percentage], precision: 1) %>%</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Распределение по статусам -->
+  <div class="bg-white rounded-lg shadow p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4">Распределение по статусам</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <% @summary[:by_status].each do |status, count| %>
+        <div class="border border-gray-200 rounded-lg p-4">
+          <p class="text-sm text-gray-500"><%= status %></p>
+          <p class="text-xl font-bold text-gray-900"><%= count %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Распределение по качеству -->
+  <div class="bg-white rounded-lg shadow p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4">Распределение по качеству</h2>
+    <div class="space-y-3">
+      <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+        <span class="text-sm font-medium text-green-800">Отлично (≥90%)</span>
+        <span class="text-lg font-bold text-green-900"><%= @summary[:by_quality][:excellent] %></span>
+      </div>
+      <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+        <span class="text-sm font-medium text-blue-800">Хорошо (80-89%)</span>
+        <span class="text-lg font-bold text-blue-900"><%= @summary[:by_quality][:good] %></span>
+      </div>
+      <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+        <span class="text-sm font-medium text-yellow-800">Удовлетворительно (60-79%)</span>
+        <span class="text-lg font-bold text-yellow-900"><%= @summary[:by_quality][:satisfactory] %></span>
+      </div>
+      <div class="flex items-center justify-between p-3 bg-orange-50 rounded-lg">
+        <span class="text-sm font-medium text-orange-800">Требует улучшения (30-59%)</span>
+        <span class="text-lg font-bold text-orange-900"><%= @summary[:by_quality][:needs_improvement] %></span>
+      </div>
+      <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+        <span class="text-sm font-medium text-red-800">Критично (<30%)</span>
+        <span class="text-lg font-bold text-red-900"><%= @summary[:by_quality][:critical] %></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Средние баллы по полям -->
+  <div class="bg-white rounded-lg shadow p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4">Средние баллы по разделам</h2>
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Раздел</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Средний балл</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Прогресс</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <% field_names = {
+            complaints: "Жалобы",
+            anamnesis_morbi: "Anamnesis morbi",
+            anamnesis_vitae: "Anamnesis vitae",
+            physical_examination: "Объективный осмотр",
+            study_protocol: "Протокол исследования",
+            diagnoses: "Диагнозы",
+            referrals: "Направления",
+            prescriptions: "Назначения",
+            recommendations: "Рекомендации"
+          } %>
+
+          <% @summary[:field_averages].each do |field, score| %>
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                <%= field_names[field] %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <%= number_with_precision(score, precision: 1) %> / 10
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                  <% percentage = (score / 10.0 * 100).round %>
+                  <% bar_color = percentage >= 80 ? 'bg-green-600' : (percentage >= 60 ? 'bg-yellow-500' : 'bg-red-500') %>
+                  <div class="<%= bar_color %> h-2.5 rounded-full" style="width: <%= percentage %>%"></div>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -567,6 +567,7 @@ DEPENDENCIES
   mission_control-jobs
   mysql2 (~> 0.4)
   neighbor
+  nokogiri
   pdf-reader
   pg (~> 1.5)
   propshaft

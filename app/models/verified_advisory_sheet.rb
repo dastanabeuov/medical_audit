@@ -7,11 +7,15 @@ class VerifiedAdvisorySheet < ApplicationRecord
   has_one :advisory_sheet_field, dependent: :destroy
   has_one :advisory_sheet_score, dependent: :destroy
 
-  has_many :relationships_doctor_and_verified_advisory_sheets, foreign_key: :verified_advisory_sheet_id
+  has_many :relationships_doctor_and_verified_advisory_sheets, foreign_key: :verified_advisory_sheet_id, class_name: "RelationshipDoctorAndVerifiedAdvisorySheet"
   has_many :doctors, through: :relationships_doctor_and_verified_advisory_sheets
 
-  has_many :relationships_main_doctor_and_verified_advisory_sheets, foreign_key: :verified_advisory_sheet_id
+  has_many :relationships_main_doctor_and_verified_advisory_sheets, foreign_key: :verified_advisory_sheet_id, class_name: "RelationshipMainDoctorAndVerifiedAdvisorySheet"
   has_many :main_doctors, through: :relationships_main_doctor_and_verified_advisory_sheets
+
+  # Поддержка вложенных атрибутов для редактирования полей
+  accepts_nested_attributes_for :advisory_sheet_field, allow_destroy: false
+  accepts_nested_attributes_for :advisory_sheet_score, allow_destroy: false
 
   enum :status, { red: 0, yellow: 1, green: 2, purple: 3 }
 

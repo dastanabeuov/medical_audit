@@ -1,5 +1,9 @@
 kz:
   are_you_sure: "Жойғыңыз келетініне сенімдісіз бе?"
+  created: 'Сәтті құрылды.'
+  not_created: 'Құрылмады.'
+  updated: 'Сәтті жаңартылды.'
+  not_updated: 'Жаңартылмады.'
   not_destroyed: "Жойылмады"
   destroyed: "Сәтті жойылды"
   destroy: "Жою"
@@ -24,7 +28,51 @@ kz:
         status: Статус
         verification_result: Тексеру нәтижесі
         recommendations: Ұсыныстар
-        
+
+  cabinet:
+    auditors:
+      advisory_sheets:
+        update:
+          success: "Кеңес парағы сәтті жаңартылды"
+          error: "Кеңес парағын жаңарту мүмкін болмады"
+        edit:
+          title: "Кеңес парағын өңдеу"
+          back: "Артқа"
+          basic_info: "Негізгі ақпарат"
+          recording: "Жазу нөмірі"
+          recording_readonly: "Жазу нөмірін өзгерту мүмкін емес"
+          status: "Статус"
+          status_red: "Сәйкес келмейді"
+          status_yellow: "Ішінара сәйкестік"
+          status_green: "Сәйкес келеді"
+          status_purple: "Тексеру мүмкін болмады"
+          original_filename: "Бастапқы файл"
+          verification_results: "Тексеру нәтижелері"
+          verification_result: "Тексеру нәтижесі"
+          recommendations: "Ұсыныстар"
+          body: "Кеңес парағының мазмұны"
+          medical_fields: "Негізгі медициналық өрістер"
+          complaints: "Шағымдар"
+          anamnesis_morbi: "Anamnesis morbi"
+          anamnesis_vitae: "Anamnesis vitae"
+          physical_examination: "Объективті тексеру"
+          study_protocol: "Зерттеу хаттамасы"
+          diagnoses: "Диагноздар"
+          diagnoses_hint: "Диагноздар бойынша құрылымдалған деректер"
+          mkb_code: "ХСА коды"
+          main_disease: "Негізгі ауру"
+          diagnosis_type: "Диагноз түрі"
+          referrals: "Бағыттамалар"
+          prescriptions: "Тағайындаулар"
+          field_recommendations: "Дәрігердің ұсыныстары"
+          notes: "Ескертпелер"
+          ai_comment: "Ескертпесі"
+          quality_scores: "Толтыру сапасының бағалауы"
+          quality_scores_hint: "Әрбір өріс үшін ұпайлар (0.0 - толтырылмаған, 0.5 - ішінара, 1.0 - толық)"
+          scores_auto_calculate: "Жалпы ұпай мен пайыз сақтау кезінде автоматты түрде есептеледі"
+          cancel: "Болдырмау"
+          save: "Сақтау"
+
   views:
     pagination:
       first: "&laquo; Бірінші"

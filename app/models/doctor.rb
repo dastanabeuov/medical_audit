@@ -6,7 +6,7 @@ class Doctor < ApplicationRecord
 
   belongs_to :main_doctor, optional: true
 
-  has_many :relationships_doctor_and_verified_advisory_sheets
+  has_many :relationships_doctor_and_verified_advisory_sheets, class_name: "RelationshipDoctorAndVerifiedAdvisorySheet"
   has_many :verified_advisory_sheets, through: :relationships_doctor_and_verified_advisory_sheets
 
   validates :email, presence: true, uniqueness: true
@@ -18,6 +18,6 @@ class Doctor < ApplicationRecord
   validates :date_of_employment, presence: true
 
   def full_name
-    [ first_name, last_name ].compact.join(" ").presence || email
+    [ last_name, first_name, second_name ].compact.join(" ").presence || email
   end
 end

@@ -38,7 +38,7 @@
             <p class="text-sm text-gray-600"><%= fields.complaints %></p>
             <% if fields.complaints_comment.present? %>
               <div class="mt-2 text-xs text-yellow-700 bg-yellow-50 rounded px-2 py-1">
-                <strong>AI-замечание:</strong> <%= fields.complaints_comment %>
+                <strong>Замечание:</strong> <%= fields.complaints_comment %>
               </div>
             <% end %>
           </div>
@@ -50,7 +50,7 @@
             <p class="text-sm text-gray-600"><%= fields.anamnesis_morbi %></p>
             <% if fields.anamnesis_morbi_comment.present? %>
               <div class="mt-2 text-xs text-yellow-700 bg-yellow-50 rounded px-2 py-1">
-                <strong>AI-замечание:</strong> <%= fields.anamnesis_morbi_comment %>
+                <strong>Замечание:</strong> <%= fields.anamnesis_morbi_comment %>
               </div>
             <% end %>
           </div>
@@ -62,7 +62,7 @@
             <p class="text-sm text-gray-600"><%= fields.anamnesis_vitae %></p>
             <% if fields.anamnesis_vitae_comment.present? %>
               <div class="mt-2 text-xs text-yellow-700 bg-yellow-50 rounded px-2 py-1">
-                <strong>AI-замечание:</strong> <%= fields.anamnesis_vitae_comment %>
+                <strong>Замечание:</strong> <%= fields.anamnesis_vitae_comment %>
               </div>
             <% end %>
           </div>
@@ -74,7 +74,7 @@
             <p class="text-sm text-gray-600"><%= fields.physical_examination %></p>
             <% if fields.physical_examination_comment.present? %>
               <div class="mt-2 text-xs text-yellow-700 bg-yellow-50 rounded px-2 py-1">
-                <strong>AI-замечание:</strong> <%= fields.physical_examination_comment %>
+                <strong>Замечание:</strong> <%= fields.physical_examination_comment %>
               </div>
             <% end %>
           </div>
@@ -86,7 +86,7 @@
             <p class="text-sm text-gray-600"><%= fields.study_protocol %></p>
             <% if fields.study_protocol_comment.present? %>
               <div class="mt-2 text-xs text-yellow-700 bg-yellow-50 rounded px-2 py-1">
-                <strong>AI-замечание:</strong> <%= fields.study_protocol_comment %>
+                <strong>Замечание:</strong> <%= fields.study_protocol_comment %>
               </div>
             <% end %>
           </div>
@@ -108,7 +108,7 @@
             </div>
             <% if fields.diagnoses_comment.present? %>
               <div class="mt-2 text-xs text-yellow-700 bg-yellow-50 rounded px-2 py-1">
-                <strong>AI-замечание:</strong> <%= fields.diagnoses_comment %>
+                <strong>Замечание:</strong> <%= fields.diagnoses_comment %>
               </div>
             <% end %>
           </div>
@@ -120,7 +120,7 @@
             <p class="text-sm text-gray-600"><%= fields.referrals %></p>
             <% if fields.referrals_comment.present? %>
               <div class="mt-2 text-xs text-yellow-700 bg-yellow-50 rounded px-2 py-1">
-                <strong>AI-замечание:</strong> <%= fields.referrals_comment %>
+                <strong>Замечание:</strong> <%= fields.referrals_comment %>
               </div>
             <% end %>
           </div>
@@ -132,7 +132,7 @@
             <p class="text-sm text-gray-600"><%= fields.prescriptions %></p>
             <% if fields.prescriptions_comment.present? %>
               <div class="mt-2 text-xs text-yellow-700 bg-yellow-50 rounded px-2 py-1">
-                <strong>AI-замечание:</strong> <%= fields.prescriptions_comment %>
+                <strong>Замечание:</strong> <%= fields.prescriptions_comment %>
               </div>
             <% end %>
           </div>
@@ -144,7 +144,7 @@
             <p class="text-sm text-gray-600"><%= fields.recommendations %></p>
             <% if fields.recommendations_comment.present? %>
               <div class="mt-2 text-xs text-yellow-700 bg-yellow-50 rounded px-2 py-1">
-                <strong>AI-замечание:</strong> <%= fields.recommendations_comment %>
+                <strong>Замечание:</strong> <%= fields.recommendations_comment %>
               </div>
             <% end %>
           </div>
@@ -156,7 +156,7 @@
             <p class="text-sm text-gray-600"><%= fields.notes %></p>
             <% if fields.notes_comment.present? %>
               <div class="mt-2 text-xs text-yellow-700 bg-yellow-50 rounded px-2 py-1">
-                <strong>AI-замечание:</strong> <%= fields.notes_comment %>
+                <strong>Замечание:</strong> <%= fields.notes_comment %>
               </div>
             <% end %>
           </div>
@@ -278,17 +278,21 @@
   <!-- Действие -->
   <div class="bg-white rounded-lg shadow p-6">
     <h2 class="text-lg font-semibold text-gray-900 mb-4">Действие</h2>
-    <dl class="grid grid-cols-1 gap-4 text-sm">
-      <div>
-        <%= button_to cabinet_auditors_advisory_sheet_path(@sheet),
-            method: :delete,
-            data: { turbo_confirm: t('are_you_sure') },
-            class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded",
-            title: t('destroy') do %>
-          <i class="bi bi-trash3-fill"></i>
-          <%= t('destroy') %>
-        <% end %>
-      </div>
-    </dl>
+    <div class="flex gap-4">
+      <%= link_to edit_cabinet_auditors_advisory_sheet_path(@sheet),
+          class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center" do %>
+        <i class="bi bi-pencil-fill mr-2"></i>
+        Редактировать
+      <% end %>
+
+      <%= button_to cabinet_auditors_advisory_sheet_path(@sheet),
+          method: :delete,
+          data: { turbo_confirm: t('are_you_sure') },
+          class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded inline-flex items-center",
+          title: t('destroy') do %>
+        <i class="bi bi-trash3-fill mr-2"></i>
+        <%= t('destroy') %>
+      <% end %>
+    </div>
   </div>
 </div>

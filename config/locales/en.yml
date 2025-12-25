@@ -1,7 +1,11 @@
-ru:
+en:
   are_you_sure: "Are you sure you want to delete?"
+  created: 'Successfully created.'
+  not_created: 'Not created.'
+  updated: 'Successfully updated.'
+  not_updated: 'Not updated.'
   not_destroyed: "Not destroyed"
-  destroyed: "Successfull destroyed"
+  destroyed: "Successfully destroyed"
   destroy: "Destroy"
   activerecord:
     models:
@@ -19,16 +23,60 @@ ru:
         first_name: First name
         last_name: Last name
       verified_advisory_sheet:
-        recording: Number recording
-        body: Context
+        recording: Recording number
+        body: Content
         status: Status
         verification_result: Verification result
         recommendations: Recommendations
+
+  cabinet:
+    auditors:
+      advisory_sheets:
+        update:
+          success: "Advisory sheet successfully updated"
+          error: "Failed to update advisory sheet"
+        edit:
+          title: "Edit Advisory Sheet"
+          back: "Back"
+          basic_info: "Basic Information"
+          recording: "Recording Number"
+          recording_readonly: "Recording number cannot be changed"
+          status: "Status"
+          status_red: "Does not comply"
+          status_yellow: "Partial compliance"
+          status_green: "Complies"
+          status_purple: "Failed to verify"
+          original_filename: "Original File"
+          verification_results: "Verification Results"
+          verification_result: "Verification Result"
+          recommendations: "Recommendations"
+          body: "Advisory Sheet Content"
+          medical_fields: "Key Medical Fields"
+          complaints: "Complaints"
+          anamnesis_morbi: "Anamnesis morbi"
+          anamnesis_vitae: "Anamnesis vitae"
+          physical_examination: "Physical Examination"
+          study_protocol: "Study Protocol"
+          diagnoses: "Diagnoses"
+          diagnoses_hint: "Structured diagnosis data"
+          mkb_code: "ICD Code"
+          main_disease: "Main Disease"
+          diagnosis_type: "Diagnosis Type"
+          referrals: "Referrals"
+          prescriptions: "Prescriptions"
+          field_recommendations: "Doctor's Recommendations"
+          notes: "Notes"
+          ai_comment: "Comment"
+          quality_scores: "Quality Assessment"
+          quality_scores_hint: "Score for each field (0.0 - not filled, 0.5 - partial, 1.0 - complete)"
+          scores_auto_calculate: "Total score and percentage are calculated automatically on save"
+          cancel: "Cancel"
+          save: "Save"
 
   views:
     pagination:
       first: "&laquo; First"
       last: "Last &raquo;"
-      previous: "&lsaquo; back"
+      previous: "&lsaquo; Back"
       next: "Forward &rsaquo;"
       truncate: "&hellip;"

@@ -6,7 +6,7 @@ class MainDoctor < ApplicationRecord
 
   has_many :doctors, dependent: :nullify
 
-  has_many :relationships_main_doctor_and_verified_advisory_sheets
+  has_many :relationships_main_doctor_and_verified_advisory_sheets, class_name: "RelationshipMainDoctorAndVerifiedAdvisorySheet"
   has_many :verified_advisory_sheets, through: :relationships_main_doctor_and_verified_advisory_sheets
 
   validates :email, presence: true, uniqueness: true
