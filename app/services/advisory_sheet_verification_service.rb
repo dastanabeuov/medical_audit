@@ -38,7 +38,10 @@ class AdvisorySheetVerificationService
       # 7. Создание записи в verified_advisory_sheets с полями и оценками
       verified_sheet = create_verified_sheet(not_verified_sheet, verification, extracted_fields)
 
-      # 8. Автоматическая привязка врача по ИИН (если найден)
+      # 8. Автоматическая привязка врача через парсинг medelement.com
+      link_doctor_from_advisory_sheet(verified_sheet, not_verified_sheet.body)
+
+      # 9. Автоматическая привязка врача по ИИН (если найден и не привязан ранее)
       link_doctor_by_iin(verified_sheet, doctor_iin) if doctor_iin.present?
 
       verified_sheet
@@ -206,6 +209,57 @@ class AdvisorySheetVerificationService
       Rails.logger.error("AdvisorySheetVerificationService: ошибка сохранения полей и оценок: #{e.class} - #{e.message}")
       Rails.logger.error(e.backtrace.first(5).join("\n"))
       # Не прерываем основной процесс верификации, просто логируем ошибку
+    end
+
+    # Автоматическая привязка врача через парсинг medelement.com
+    def link_doctor_from_advisory_sheet(verified_sheet, content)
+      # 1. Извлекаем ФИО врача из КЛ
+      doctor_name = DoctorDataExtractorService.extract(content)
+
+      return if doctor_name[:full_name].blank?
+
+      Rails.logger.info("Извлечено ФИО врача из КЛ: #{doctor_name[:full_name]}")
+
+      # 2. Ищем врача на medelement.com
+      medelement_data = MedelementScraperService.find_doctor(doctor_name)
+
+      # 3. Подготавливаем данные для создания аккаунта
+      doctor_data = if medelement_data.present?
+        Rails.logger.info("Врач найден на medelement.com: #{medelement_data[:email]}")
+        medelement_data
+      else
+        Rails.logger.info("Врач не найден на medelement.com, будет создан с автогенерированным email")
+        doctor_name # Только ФИО, email сгенерируется автоматически
+      end
+
+      # 4. Находим или создаем аккаунт врача
+      doctor = DoctorAccountService.find_or_create(doctor_data)
+
+      # 5. Привязываем к консультативному листу
+      if doctor.present?
+        DoctorAccountService.link_to_advisory_sheet(doctor, verified_sheet)
+        Rails.logger.info("КЛ ##{verified_sheet.recording} привязан к врачу: #{doctor.full_name} (#{doctor.email})")
+      end
+    rescue StandardError => e
+      Rails.logger.error("Ошибка привязки врача к КЛ: #{e.message}")
+      Rails.logger.error(e.backtrace.first(5).join("\n"))
+      # Не прерываем процесс верификации, просто логируем ошибку
+    end
+
+    # Привязка врача по ИИН (если такая логика потребуется)
+    def link_doctor_by_iin(verified_sheet, doctor_iin)
+      return if doctor_iin.blank?
+
+      # Ищем врача по doctor_identifier (если используется ИИН как идентификатор)
+      doctor = Doctor.find_by(doctor_identifier: doctor_iin)
+
+      if doctor.present? && !verified_sheet.doctors.include?(doctor)
+        DoctorAccountService.link_to_advisory_sheet(doctor, verified_sheet)
+        Rails.logger.info("КЛ ##{verified_sheet.recording} привязан к врачу по ИИН: #{doctor.full_name}")
+      end
+    rescue StandardError => e
+      Rails.logger.error("Ошибка привязки врача по ИИН: #{e.message}")
+      # Не прерываем процесс
     end
   end
 end

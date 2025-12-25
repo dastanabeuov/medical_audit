@@ -43,11 +43,14 @@ Rails.application.routes.draw do
   namespace :cabinet do
     namespace :auditors do
       get "dashboard", to: "dashboard#index"
-      resources :advisory_sheets, only: [ :index, :show, :create, :destroy ] do
+      resources :advisory_sheets do
         collection do
           get :upload
         end
       end
+
+      # Список врачей с учетными данными
+      resources :doctors, only: [ :index ]
 
       # Отчеты
       resource :reports, only: [] do

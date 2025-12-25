@@ -1,0 +1,17 @@
+<nav class="bg-white shadow-sm border-b border-gray-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex space-x-8 h-12 items-center">
+      <%= link_to "Дашборд", cabinet_auditors_dashboard_path,
+          class: "text-sm font-medium #{'text-blue-600 border-b-2 border-blue-600' if current_page?(cabinet_auditors_dashboard_path)} text-gray-700 hover:text-blue-600 py-3" %>
+
+      <%= link_to "Консультативные листы", cabinet_auditors_advisory_sheets_path,
+          class: "text-sm font-medium #{'text-blue-600 border-b-2 border-blue-600' if request.path.start_with?('/cabinet/auditors/advisory_sheets')} text-gray-700 hover:text-blue-600 py-3" %>
+
+      <%= link_to "Врачи", cabinet_auditors_doctors_path,
+          class: "text-sm font-medium #{'text-blue-600 border-b-2 border-blue-600' if current_page?(cabinet_auditors_doctors_path)} text-gray-700 hover:text-blue-600 py-3" %>
+
+      <%= link_to "Отчеты", summary_cabinet_auditors_reports_path,
+          class: "text-sm font-medium #{'text-blue-600 border-b-2 border-blue-600' if request.path.start_with?('/cabinet/auditors/reports')} text-gray-700 hover:text-blue-600 py-3" %>
+    </div>
+  </div>
+</nav>

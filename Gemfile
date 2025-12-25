@@ -80,6 +80,7 @@ gem "ruby-vips" # Image processing
 gem "pdf-reader" # PDF parsing
 gem "docx" # DOCX parsing
 gem "roo", "~> 3.0.0" # Excel parsing
+gem "nokogiri" # HTML/XML parsing for web scraping
 
 # Search indexis ibject from find object to form [https://github.com/pat/thinking-sphinx]
 gem "mysql2",          "~> 0.4",    platform: :ruby

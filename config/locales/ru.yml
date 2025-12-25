@@ -1,5 +1,9 @@
 ru:
   are_you_sure: "Вы уверены, что хотите удалить?"
+  created: 'Успешно создано.'
+  not_created: 'Не создано.'
+  updated: 'Успешно обновлено.'
+  not_updated: 'Не обновлено.'
   not_destroyed: "Не уничтожено"
   destroyed: "Успешно уничтожено"
   destroy: "Удалить"
@@ -24,6 +28,50 @@ ru:
         status: Статус
         verification_result: Результат проверки
         recommendations: Рекомендации
+
+  cabinet:
+    auditors:
+      advisory_sheets:
+        update:
+          success: "Консультативный лист успешно обновлен"
+          error: "Не удалось обновить консультативный лист"
+        edit:
+          title: "Редактирование консультативного листа"
+          back: "Назад"
+          basic_info: "Основная информация"
+          recording: "Номер записи"
+          recording_readonly: "Номер записи не может быть изменен"
+          status: "Статус"
+          status_red: "Не соответствует"
+          status_yellow: "Частичное соответствие"
+          status_green: "Соответствует"
+          status_purple: "Не удалось проверить"
+          original_filename: "Исходный файл"
+          verification_results: "Результаты проверки"
+          verification_result: "Результат проверки"
+          recommendations: "Рекомендации"
+          body: "Содержимое консультативного листа"
+          medical_fields: "Ключевые медицинские поля"
+          complaints: "Жалобы"
+          anamnesis_morbi: "Anamnesis morbi"
+          anamnesis_vitae: "Anamnesis vitae"
+          physical_examination: "Объективный осмотр"
+          study_protocol: "Протокол исследования"
+          diagnoses: "Диагнозы"
+          diagnoses_hint: "Структурированные данные по диагнозам"
+          mkb_code: "Код МКБ"
+          main_disease: "Основное заболевание"
+          diagnosis_type: "Вид диагноза"
+          referrals: "Направления"
+          prescriptions: "Назначения"
+          field_recommendations: "Рекомендации врача"
+          notes: "Примечания"
+          ai_comment: "Замечание"
+          quality_scores: "Оценка качества заполнения"
+          quality_scores_hint: "Баллы за каждое поле (0.0 - не заполнено, 0.5 - частично, 1.0 - полностью)"
+          scores_auto_calculate: "Итоговый балл и процент рассчитываются автоматически при сохранении"
+          cancel: "Отмена"
+          save: "Сохранить"
 
   views:
     pagination:
