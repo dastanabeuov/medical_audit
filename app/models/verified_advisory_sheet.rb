@@ -7,10 +7,11 @@ class VerifiedAdvisorySheet < ApplicationRecord
   has_one :advisory_sheet_field, dependent: :destroy
   has_one :advisory_sheet_score, dependent: :destroy
 
-  has_many :relationships_doctor_and_verified_advisory_sheets, foreign_key: :verified_advisory_sheet_id, class_name: "RelationshipDoctorAndVerifiedAdvisorySheet"
+  # При удалении КЛ удаляются ТОЛЬКО связи, но НЕ сами врачи
+  has_many :relationships_doctor_and_verified_advisory_sheets, foreign_key: :verified_advisory_sheet_id, class_name: "RelationshipDoctorAndVerifiedAdvisorySheet", dependent: :destroy
   has_many :doctors, through: :relationships_doctor_and_verified_advisory_sheets
 
-  has_many :relationships_main_doctor_and_verified_advisory_sheets, foreign_key: :verified_advisory_sheet_id, class_name: "RelationshipMainDoctorAndVerifiedAdvisorySheet"
+  has_many :relationships_main_doctor_and_verified_advisory_sheets, foreign_key: :verified_advisory_sheet_id, class_name: "RelationshipMainDoctorAndVerifiedAdvisorySheet", dependent: :destroy
   has_many :main_doctors, through: :relationships_main_doctor_and_verified_advisory_sheets
 
   # Поддержка вложенных атрибутов для редактирования полей

@@ -66,7 +66,7 @@ en:
           prescriptions: "Prescriptions"
           field_recommendations: "Doctor's Recommendations"
           notes: "Notes"
-          ai_comment: "Comment"
+          ai_comment: "Comments"
           quality_scores: "Quality Assessment"
           quality_scores_hint: "Score for each field (0.0 - not filled, 0.5 - partial, 1.0 - complete)"
           scores_auto_calculate: "Total score and percentage are calculated automatically on save"

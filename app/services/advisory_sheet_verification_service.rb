@@ -220,25 +220,16 @@ class AdvisorySheetVerificationService
 
       Rails.logger.info("Извлечено ФИО врача из КЛ: #{doctor_name[:full_name]}")
 
-      # 2. Ищем врача на medelement.com
-      medelement_data = MedelementScraperService.find_doctor(doctor_name)
+      # 2. Находим или создаем аккаунт врача
+      # DoctorAccountService.find_or_create сам сделает поиск в medelement если нужно
+      doctor = DoctorAccountService.find_or_create(doctor_name)
 
-      # 3. Подготавливаем данные для создания аккаунта
-      doctor_data = if medelement_data.present?
-        Rails.logger.info("Врач найден на medelement.com: #{medelement_data[:email]}")
-        medelement_data
-      else
-        Rails.logger.info("Врач не найден на medelement.com, будет создан с автогенерированным email")
-        doctor_name # Только ФИО, email сгенерируется автоматически
-      end
-
-      # 4. Находим или создаем аккаунт врача
-      doctor = DoctorAccountService.find_or_create(doctor_data)
-
-      # 5. Привязываем к консультативному листу
+      # 3. Привязываем к консультативному листу
       if doctor.present?
         DoctorAccountService.link_to_advisory_sheet(doctor, verified_sheet)
         Rails.logger.info("КЛ ##{verified_sheet.recording} привязан к врачу: #{doctor.full_name} (#{doctor.email})")
+      else
+        Rails.logger.warn("✗ Не удалось найти/создать врача '#{doctor_name[:full_name]}'")
       end
     rescue StandardError => e
       Rails.logger.error("Ошибка привязки врача к КЛ: #{e.message}")

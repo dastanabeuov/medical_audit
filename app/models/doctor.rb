@@ -2,7 +2,7 @@ class Doctor < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :confirmable, :lockable, :timeoutable,
-         :trackable and :omniauthable
+         :trackable
 
   belongs_to :main_doctor, optional: true
 

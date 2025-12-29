@@ -92,6 +92,36 @@ rails console
 > Mkb.search_similar(query_embedding, limit: 10)
 ```
 
+### Doctor Import from Medelement
+```bash
+# Test connection and fetch specialists (without saving)
+rails doctors:test_fetch_specialists
+
+# Import all specialists from medelement.com
+rails doctors:import_from_medelement
+
+# Import with attachment to main doctor
+rails doctors:import_with_main_doctor[main_doctor@example.com]
+
+# In Rails console
+> specialists = MedelementScraperService.fetch_all_specialists
+> result = DoctorImportService.import_from_medelement
+> # => { created: 15, updated: 5, failed: 0, errors: [] }
+
+# Required ENV variables in .env:
+# MEDELEMENT_LOGIN=your_email@example.com
+# MEDELEMENT_PASSWORD=your_password
+```
+
+See `MEDELEMENT_IMPORT.md` for detailed documentation.
+
+**Current Status (2025-12-27):**
+- ⚠️ Medelement.com uses JavaScript/AJAX for loading specialists data
+- Net::HTTP version implemented but requires AJAX endpoint discovery
+- See `QUICK_START_AJAX.md` for endpoint discovery instructions
+- See `AJAX_INTEGRATION_PLAN.md` for integration roadmap
+- Alternative: Use original Selenium version (works but requires browser automation)
+
 ## Architecture
 
 ### RAG Pipeline Architecture
@@ -169,6 +199,18 @@ Services are the primary business logic layer:
 - **ProtocolImportService**: Bulk import protocols with embeddings
   - Parses files from data_protocol/ directory
   - Generates embeddings, bulk upserts
+- **MedelementScraperService**: Web scraping врачей с medelement.com
+  - Current implementation: Net::HTTP with AJAX endpoint support (in progress)
+  - Features: authentication, redirect handling, gzip decoding, retry logic
+  - Authenticates through https://login.medelement.com/
+  - Status: Requires AJAX endpoint discovery (see QUICK_START_AJAX.md)
+  - Methods: `find_doctor(doctor_name)`, `fetch_all_specialists()`
+  - Fallback: Selenium WebDriver version available (browser automation)
+- **DoctorImportService**: Import врачей from medelement data
+  - Creates or updates Doctor records by email
+  - Generates temporary passwords for new doctors
+  - Skips email confirmation for imported accounts
+  - Returns import stats: `{ created:, updated:, failed:, errors: [] }`
 
 ### Job Processing
 

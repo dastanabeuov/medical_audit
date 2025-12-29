@@ -2,11 +2,33 @@
   <div class="flex justify-between items-center">
     <h1 class="text-2xl font-bold text-gray-900">Список врачей</h1>
     <div class="flex gap-3">
-      <span class="text-sm text-gray-600 bg-gray-100 px-4 py-2 rounded-lg">
-        Всего врачей: <%= @doctors.count %>
-      </span>
+      <% if params[:search].present? %>
+        <span class="text-sm text-blue-600 bg-blue-50 px-4 py-2 rounded-lg border border-blue-200">
+          Найдено: <%= @doctors.total_count %>
+        </span>
+      <% else %>
+        <span class="text-sm text-gray-600 bg-gray-100 px-4 py-2 rounded-lg">
+          Всего врачей: <%= @doctors.total_count %>
+        </span>
+      <% end %>
     </div>
   </div>
+
+  <!-- Форма поиска -->
+  <%= form_with url: cabinet_auditors_doctors_path, method: :get, class: "mb-6" do |f| %>
+    <div class="flex gap-3">
+      <div class="flex-1">
+        <%= f.text_field :search,
+            value: params[:search],
+            placeholder: "Поиск по ФИО, email, отделению, специализации, клинике...",
+            class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+      </div>
+      <%= f.submit "Искать", class: "px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition" %>
+      <% if params[:search].present? %>
+        <%= link_to "Сбросить", cabinet_auditors_doctors_path, class: "px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition" %>
+      <% end %>
+    </div>
+  <% end %>
 
   <!-- Информация о пароле -->
   <div class="bg-blue-50 border-l-4 border-blue-400 p-4">
@@ -31,12 +53,12 @@
         <thead class="bg-gray-50">
           <tr>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ФИО</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">КЛ</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email (Логин)</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Пароль</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Отделение</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Специализация</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Клиника</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">КЛ</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Дата создания</th>
           </tr>
         </thead>
@@ -47,6 +69,15 @@
                 <div class="text-sm font-medium text-gray-900"><%= doctor.full_name %></div>
                 <% if doctor.second_name.present? %>
                   <div class="text-xs text-gray-500"><%= doctor.second_name %></div>
+                <% end %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-center">
+                <% if doctor.sheets_count.to_i > 0 %>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    <%= doctor.sheets_count %>
+                  </span>
+                <% else %>
+                  <span class="text-gray-400">—</span>
                 <% end %>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
@@ -73,15 +104,6 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 <%= doctor.clinic || "—" %>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-center">
-                <% if doctor.verified_advisory_sheets.any? %>
-                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                    <%= doctor.verified_advisory_sheets.count %>
-                  </span>
-                <% else %>
-                  <span class="text-gray-400">—</span>
-                <% end %>
-              </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 <%= doctor.created_at.strftime("%d.%m.%Y %H:%M") %>
               </td>
@@ -96,9 +118,21 @@
         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
         </svg>
-        <p class="mt-2">Нет врачей в системе</p>
-        <p class="text-sm text-gray-400 mt-1">Врачи будут автоматически созданы при обработке КЛ</p>
+        <% if params[:search].present? %>
+          <p class="mt-2 font-medium">Врачи не найдены</p>
+          <p class="text-sm text-gray-400 mt-1">Попробуйте изменить условия поиска</p>
+        <% else %>
+          <p class="mt-2">Нет врачей в системе</p>
+          <p class="text-sm text-gray-400 mt-1">Врачи будут автоматически созданы при обработке КЛ</p>
+        <% end %>
       </div>
     <% end %>
   </div>
+
+  <!-- Пагинация -->
+  <% if @doctors.total_pages > 1 %>
+    <div class="mt-6">
+      <%= paginate @doctors %>
+    </div>
+  <% end %>
 </div>
