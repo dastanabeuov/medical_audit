@@ -18,7 +18,7 @@ module Cabinet
           @sheets = fetch_sheets
         end
 
-        @sheets = @sheets.page(params[:page]).per(20)
+        @sheets = @sheets.page(params[:page]).per(100)
       end
 
       def show
@@ -84,7 +84,7 @@ module Cabinet
       private
 
       def set_sheet
-        @sheet = VerifiedAdvisorySheet.includes(:advisory_sheet_field, :advisory_sheet_score).find(params[:id])
+        @sheet = VerifiedAdvisorySheet.includes(:advisory_sheet_field, :advisory_sheet_score, doctors: :main_doctor).find(params[:id])
       end
 
       def sheet_params

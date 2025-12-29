@@ -2,7 +2,7 @@ class MainDoctor < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :confirmable, :lockable, :timeoutable,
-         :trackable and :omniauthable
+         :trackable
 
   has_many :doctors, dependent: :nullify
 

@@ -53,21 +53,6 @@ class AdvisorySheetUploadService
       patient_name = PersonalDataSanitizerService.extract_patient_name(content)
       filename_to_use = patient_name.present? ? patient_name : filename
 
-
-      # Тут на 57 строчке нужно вызвать новый сервис который будет делать следующее
-      # 1) В КЛ нужно извлеч ФИО врача
-      # 2) По всем ссылкам клиники нужно пройтись, и найти его, затем  взять его(врача) почту
-      # 3) доступ к ссылкам только у меня(логин - d.abeuov@emirmed.kz / пароль - Qq123456!) Нужно создать пременные в .env
-      # https://co.medelement.com/ref_companies/view/NTg4ODUxNjAxNjU3MTc1MjU3/fDh8
-      # https://co.medelement.com/ref_companies/view/NTIwODU4NTkxNzE3MDczODQz/fDh8
-      # https://co.medelement.com/ref_companies/view/MTYzMTk3MDE2MzA5MjMyMTg%253D/fDh8
-      # дополнительные ссылки могут еще добавлятся...
-
-      # 4) Далее создать на основе ФИО и Почты аккаунт врача, только если нет аккаунта. Пароль для всех будет Qq123456!
-      # 5) Нужно привязать текущий КЛ с аккаунтом врача. Можно сразу привязывать к VerifiedAdvisorySheet
-      # 6) Если по ссылкам не удается найти врача, то нужно создать с ФИО с КЛ почтой будет doctor-#{number}@emirmed.kz пароль Qq123456!
-      # 7) Список всех врачей отобразить в кабинете Аудитора с ФИО, логин(почта), пароль(Qq123456!)
-
       sheet = NotVerifiedAdvisorySheet.new(
         recording: recording,
         body: content,

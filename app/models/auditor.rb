@@ -2,7 +2,7 @@ class Auditor < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :confirmable, :lockable, :timeoutable,
-         :trackable and :omniauthable
+         :trackable
 
   has_many :not_verified_advisory_sheets, dependent: :destroy
   has_many :verified_advisory_sheets, dependent: :nullify

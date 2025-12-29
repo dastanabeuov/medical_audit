@@ -1,33 +1,32 @@
-<%# app/views/kaminari/_paginator.html.erb %>
-<%= paginator.render do %>
-  <nav class="flex items-center justify-between" aria-label="Pagination">
-    <div class="flex-1 flex justify-between sm:hidden">
-      <%= prev_page_tag class: "relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" %>
-      <%= next_page_tag class: "ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" %>
+<%# The container tag -%>
+<%= paginator.render do -%>
+  <nav class="flex items-center justify-between border-t border-gray-200 px-4 sm:px-0" aria-label="Pagination">
+    <!-- Mobile pagination -->
+    <div class="flex w-0 flex-1 sm:hidden">
+      <%= prev_page_tag unless current_page.first? %>
     </div>
-    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+    <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
       <div>
         <p class="text-sm text-gray-700">
-          Показано с <span class="font-medium"><%= page_entries_info @sheets, entry_name: 'записей' %></span>
+          Страница <span class="font-medium"><%= current_page.number %></span> из <span class="font-medium"><%= total_pages %></span>
         </p>
       </div>
       <div>
-        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-          <%= first_page_tag class: "relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" %>
-          <%= prev_page_tag class: "relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" %>
-          <% each_page do |page| %>
-            <% if page.current? %>
-              <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-blue-50 text-sm font-medium text-blue-600"><%= page %></span>
-            <% elsif page.gap? %>
-              <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">...</span>
-            <% else %>
-              <%= link_to page, url_for(page: page), class: "relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50" %>
-            <% end %>
-          <% end %>
-          <%= next_page_tag class: "relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" %>
-          <%= last_page_tag class: "relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" %>
+        <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+          <%= prev_page_tag unless current_page.first? %>
+          <% each_page do |page| -%>
+            <% if page.display_tag? -%>
+              <%= page_tag page %>
+            <% elsif !page.was_truncated? -%>
+              <%= gap_tag %>
+            <% end -%>
+          <% end -%>
+          <%= next_page_tag unless current_page.last? %>
         </nav>
       </div>
     </div>
+    <div class="flex w-0 flex-1 justify-end sm:hidden">
+      <%= next_page_tag unless current_page.last? %>
+    </div>
   </nav>
-<% end %>
+<% end -%>

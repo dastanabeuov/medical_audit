@@ -3,10 +3,13 @@
 # Сервис для удаления персональных данных пациента из КЛ
 # ВАЖНО: ИИ не должен знать личные данные пациента
 class PersonalDataSanitizerService
+  # Кириллица + казахские буквы (Ә ә Ғ ғ Қ қ Ң ң Ө ө Ұ ұ Ү ү Һ һ І і)
+  CYRILLIC_PATTERN = '[А-ЯЁа-яёӘәҒғҚқҢңӨөҰұҮүҺһІі]'
+
   # Паттерны для поиска персональных данных
   PATTERNS = {
-    # ФИО (полное и частичное)
-    full_name: /(?:Пациент|ФИО|Больной)[\s:]*([А-ЯЁа-яё]+[\s*]+[А-ЯЁа-яё*]+[\s*]*[А-ЯЁа-яё*]*)/i,
+    # ФИО (полное и частичное) - поддержка казахских букв
+    full_name: /(?:Пациент|ФИО|Больной)[\s:,]*(#{CYRILLIC_PATTERN}+[\s*,]+#{CYRILLIC_PATTERN}*[\s*,]*#{CYRILLIC_PATTERN}*)/i,
 
     # ИИН (12 цифр)
     iin: /\b\d{12}\b/,
@@ -48,9 +51,9 @@ class PersonalDataSanitizerService
 
       sanitized = content.dup
 
-      # Заменяем ФИО
+      # Заменяем ФИО (поддержка казахских букв)
       sanitized.gsub!(PATTERNS[:full_name]) do |match|
-        match.gsub(/[А-ЯЁа-яё]+/) { |name| mask_name(name) }
+        match.gsub(/#{CYRILLIC_PATTERN}+/o) { |name| mask_name(name) }
       end
 
       # Заменяем ИИН
@@ -107,8 +110,10 @@ class PersonalDataSanitizerService
       # Извлекаем только ФИО (группа захвата 1)
       full_name = match[1]
 
-      # Очищаем от лишних пробелов и звездочек
-      full_name.gsub(/\s+/, " ").gsub("*", "").strip
+      # Очищаем от лишних символов: пробелов, звездочек, запятых, цифр
+      full_name.gsub(/\s+/, " ")              # Множественные пробелы в один
+               .gsub(/[*,\d]/, "")             # Удаляем звездочки, запятые, цифры
+               .strip
     end
 
     # Извлечение ИИН пациента из КЛ (ДО санитизации!)
@@ -140,8 +145,8 @@ class PersonalDataSanitizerService
     end
 
     def clean_masked_data(content)
-      # Удаляем уже замаскированные данные (со звездочками)
-      content.gsub(/[А-ЯЁа-яё]+\*+[А-ЯЁа-яё]*\**/i, "[ИМЯ СКРЫТО]")
+      # Удаляем уже замаскированные данные (со звездочками) - поддержка казахских букв
+      content.gsub(/#{CYRILLIC_PATTERN}+\*+#{CYRILLIC_PATTERN}*\**/oi, "[ИМЯ СКРЫТО]")
              .gsub(/\d+\*+\d*/i, "[НОМЕР СКРЫТ]")
     end
 
