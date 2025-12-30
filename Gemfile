@@ -89,7 +89,7 @@ gem "thinking-sphinx", "~> 5.5"
 
 # Scheduling cron & jobs
 gem "whenever", "~> 1.1"
-gem "sidekiq", "~> 8.0"
+gem "sidekiq", "~> 8.1"
 gem "redis", "~> 5.4", ">= 5.4.1"
 
 # Background jobs control + interface
